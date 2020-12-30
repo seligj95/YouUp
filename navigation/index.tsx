@@ -44,6 +44,7 @@ function RootNavigator() {
         options={{
           title: "YouUp?",
           headerRight: () => (
+            // make this a modal for filtering the statuses, only show on status screen
             <View style={{marginRight: 20}}>
               <Ionicons name="ios-filter" size={30} color={Colors.light.background} />
             </View>
