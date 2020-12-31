@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import StatusListItem from '../components/StatusListItem';
 import statusItems from '../data/StatusItems'
@@ -7,7 +7,12 @@ import statusItems from '../data/StatusItems'
 export default function StatusesScreen() {
   return (
     <View style={styles.container}>
-      <StatusListItem statusItem={statusItems[0]} />
+      <FlatList 
+        style={{width: '100%'}}
+        data={statusItems} 
+        renderItem={({ item }) => <StatusListItem statusItem={item} />}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }

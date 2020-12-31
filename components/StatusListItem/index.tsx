@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { StatusItem } from '../../types';
@@ -21,8 +22,10 @@ const StatusListItem = (props: StatusListItemProps) => {
         </View>
         <View style={style.contactStatusContainer}>
           <Text style={style.contactStatus}>{statusItem.contactStatus.content}</Text>
-          {/* <Text>Last Updated: {statusItem.contactStatus.createdAt}</Text> */}
-          <Text style={style.lastUpdate}>Yesterday</Text>
+          <Text style={style.lastUpdate}>
+            {'Last Updated:\n'}
+            {moment(statusItem.contactStatus.createdAt).format('MM/DD/YYYY, h:mm a')}
+          </Text>
         </View>
       </View>
       <View style={style.userStatusContainer}>
