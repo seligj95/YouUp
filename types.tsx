@@ -26,6 +26,7 @@ export type User = {
 export type Tag = {
   id: String;
   content: string;
+  user: User;
 };
 
 export type Status = {
