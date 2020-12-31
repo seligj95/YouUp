@@ -32,13 +32,14 @@ export type Status = {
   id: String;
   content: string;
   createdAt: string;
+  user: User;
 };
 
 export type StatusItem = {
   id: String;
-  users: [User];
-  contactTags: [Tag];
-  userTags: [Tag];
+  users: User[];
+  contactTags: Tag[];
+  userTags: Tag[];
   contactStatus: Status;
   userStatus: Status;
 };

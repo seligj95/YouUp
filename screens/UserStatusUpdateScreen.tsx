@@ -1,13 +1,21 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import statuses from '../data/Statuses';
+import StatusUpdate from '../components/StatusUpdate';
 
 const UserStatusUpdateScreen = () => {
   const route = useRoute();
   // console.log(route.params)
 
   return (
-    <Text>Status Update Screen</Text>
+    <View>
+      <FlatList 
+        style={{width: '100%'}}
+        data={statuses.statuses} 
+        renderItem={({ item }) => <StatusUpdate status={item} />}
+      />
+    </View>
   );
 }
 

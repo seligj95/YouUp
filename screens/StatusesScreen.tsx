@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { View } from '../components/Themed';
+import { FlatList, StyleSheet, View } from 'react-native';
 import StatusListItem from '../components/StatusListItem';
 import statusItems from '../data/StatusItems'
 
