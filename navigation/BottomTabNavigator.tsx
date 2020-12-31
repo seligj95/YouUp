@@ -25,20 +25,21 @@ export default function BottomTabNavigator() {
         activeBackgroundColor: '#E9765B',
         labelStyle: {
           fontWeight: 'bold'
-        } 
+        },
+        showLabel: false 
       }}>
       <BottomTab.Screen
         name="Statuses"
         component={StatusesTabNavigator}
         options={{
-          tabBarIcon: ({ color }) => <Zocial name="statusnet" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Zocial name="statusnet" size={36} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Settings"
         component={SettingsTabNavigator}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="settings-sharp" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="settings-sharp" size={36} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -61,7 +62,10 @@ function StatusesTabNavigator() {
       <StatusesTabStack.Screen
         name="StatusesScreen"
         component={StatusesScreen}
-        options={{ headerTitle: 'Statuses' }}
+        options={{ 
+          // hide this or style it?
+          headerTitle: 'Statuses',
+        }}
       />
     </StatusesTabStack.Navigator>
   );

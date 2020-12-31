@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
+import StatusListItem from '../components/StatusListItem';
+import statusItems from '../data/StatusItems'
 
 export default function StatusesScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Statuses</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/StatusesScreen.tsx" />
+      <StatusListItem statusItem={statusItems[0]} />
     </View>
   );
 }
