@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { StatusItem } from '../../types';
 import style from './style';
 
@@ -10,8 +10,13 @@ export type StatusListItemProps = {
 
 const StatusListItem = (props: StatusListItemProps) => {
   const { statusItem } = props;
-
+  
   const contact = statusItem.users[1];
+
+  const onClick = () => {
+    console.warn(`touched ${contact.name}`)
+  };
+  
 
   return (
     <View style={style.container}>
@@ -28,9 +33,11 @@ const StatusListItem = (props: StatusListItemProps) => {
           </Text>
         </View>
       </View>
-      <View style={style.userStatusContainer}>
-        <Text style={style.userStatus}>Set Status: {statusItem.userStatus.content}</Text>
-      </View>
+      <TouchableWithoutFeedback onPress={onClick}>
+        <View style={style.userStatusContainer}>
+          <Text style={style.userStatus}>Set Status: {statusItem.userStatus.content}</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };

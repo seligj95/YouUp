@@ -5,6 +5,7 @@ import { Button, ColorSchemeName, View } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
+import UserStatusUpdateScreen from '../screens/UserStatusUpdateScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
@@ -50,6 +51,12 @@ function RootNavigator() {
             </View>
           )
         }}
+      />
+      {/* make into a modal */}
+      <Stack.Screen 
+        name="StatusUpdate" 
+        component={UserStatusUpdateScreen} 
+        options={{ title: 'Status Update' }} 
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
