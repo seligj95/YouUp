@@ -1,9 +1,9 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, ColorSchemeName, View } from 'react-native';
+import { ColorSchemeName, View } from 'react-native';
 import Colors from '../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import UserStatusUpdateScreen from '../screens/UserStatusUpdateScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -56,7 +56,14 @@ function RootNavigator() {
       <Stack.Screen 
         name="StatusUpdate" 
         component={UserStatusUpdateScreen} 
-        options={{ title: 'Status Update' }} 
+        options={({ route }) => ({ 
+          title: route.params.name,
+          headerRight: () => (
+            <View style={{marginRight: 20}}>
+              <MaterialCommunityIcons name="restart" size={30} color={Colors.light.background} />
+            </View>
+          ) 
+        })} 
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>

@@ -3,20 +3,25 @@ import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { StatusItem } from '../../types';
 import style from './style';
+import { useNavigation } from '@react-navigation/native';
 
 export type StatusListItemProps = {
   statusItem: StatusItem;
-}
+};
 
 const StatusListItem = (props: StatusListItemProps) => {
   const { statusItem } = props;
+
+  const navigation = useNavigation();
   
   const contact = statusItem.users[1];
 
   const onClick = () => {
-    console.warn(`touched ${contact.name}`)
+    navigation.navigate('StatusUpdate', { 
+      id: statusItem.id, 
+      name: contact.name,
+    })
   };
-  
 
   return (
     <View style={style.container}>
@@ -29,7 +34,7 @@ const StatusListItem = (props: StatusListItemProps) => {
           <Text style={style.contactStatus}>{statusItem.contactStatus.content}</Text>
           <Text style={style.lastUpdate}>
             {'Last Updated:\n'}
-            {moment(statusItem.contactStatus.createdAt).format('MM/DD/YYYY, h:mm a')}
+            {moment(statusItem.contactStatus.createdAt).format('MM/DD/YY, h:mm a')}
           </Text>
         </View>
       </View>

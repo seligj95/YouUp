@@ -21,18 +21,18 @@ export type User = {
   id: String;
   name: String;
   imageUri: String;
-}
+};
 
 export type Tag = {
   id: String;
   content: string;
-}
+};
 
 export type Status = {
   id: String;
   content: string;
   createdAt: string;
-}
+};
 
 export type StatusItem = {
   id: String;
@@ -41,4 +41,4 @@ export type StatusItem = {
   userTags: [Tag];
   contactStatus: Status;
   userStatus: Status;
-}
+};
