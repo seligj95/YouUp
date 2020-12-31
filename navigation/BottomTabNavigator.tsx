@@ -7,7 +7,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import StatusesScreen from '../screens/StatusesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { BottomTabParamList, StatusesParamList, SettingsParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -16,7 +16,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Statuses"
       tabBarOptions={{ 
         activeTintColor: Colors[colorScheme].background,
         style: {
@@ -28,15 +28,15 @@ export default function BottomTabNavigator() {
         } 
       }}>
       <BottomTab.Screen
-        name="STATUSES"
-        component={TabOneNavigator}
+        name="Statuses"
+        component={StatusesTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <Zocial name="statusnet" size={28} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="SETTINGS"
-        component={TabTwoNavigator}
+        name="Settings"
+        component={SettingsTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <Ionicons name="settings-sharp" size={28} color={color} />,
         }}
@@ -47,36 +47,36 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
-}
+// function tabBarIcon(props: { name: string; color: string }) {
+//   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+// }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const StatusesTabStack = createStackNavigator<StatusesParamList>();
 
-function TabOneNavigator() {
+function StatusesTabNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
+    <StatusesTabStack.Navigator>
+      <StatusesTabStack.Screen
         name="StatusesScreen"
         component={StatusesScreen}
         options={{ headerTitle: 'Statuses' }}
       />
-    </TabOneStack.Navigator>
+    </StatusesTabStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const SettingsTabStack = createStackNavigator<SettingsParamList>();
 
-function TabTwoNavigator() {
+function SettingsTabNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
+    <SettingsTabStack.Navigator>
+      <SettingsTabStack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
         options={{ headerTitle: 'Settings' }}
       />
-    </TabTwoStack.Navigator>
+    </SettingsTabStack.Navigator>
   );
 }
