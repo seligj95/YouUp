@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import statuses from '../data/Statuses';
 import tags from '../data/Tags';
@@ -18,6 +18,9 @@ const UserStatusUpdateScreen = () => {
         style={{width: '100%'}}
         data={statuses.statuses} 
         renderItem={({ item }) => <StatusUpdate status={item} />}
+        contentContainerStyle={{
+          flexDirection: 'row'
+        }}
       />
       <StatusInputBox />
       <FlatList

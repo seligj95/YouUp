@@ -21,8 +21,10 @@ const StatusUpdate = (props: StatusUpdateProps) => {
       <View style={[
         style.statusBox, {
           backgroundColor: isUserStatus() ? '#B9D4DB' : '#F2A490',
-          marginLeft: isUserStatus() ? 50 : 0,
-          marginRight: isUserStatus() ? 0 : 50,
+          // marginLeft: isUserStatus() ? 50 : 0,
+          // marginRight: isUserStatus() ? 0 : 50,
+          width: '100%',
+          flex: 1,
         }
       ]}>
         {isUserStatus() && 

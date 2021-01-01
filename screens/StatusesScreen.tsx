@@ -1,9 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import StatusListItem from '../components/StatusListItem';
-import statusItems from '../data/StatusItems'
+import statusItems from '../data/StatusItems';
 
-export default function StatusesScreen() {
+const renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE",
+          marginLeft: 80,
+        }}
+      />
+    );
+  };
+
+export default function StatusesScreen(this: any) {
   return (
     <View style={styles.container}>
       <FlatList 
@@ -11,6 +24,7 @@ export default function StatusesScreen() {
         data={statusItems} 
         renderItem={({ item }) => <StatusListItem statusItem={item} />}
         keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={renderSeparator}
       />
     </View>
   );
