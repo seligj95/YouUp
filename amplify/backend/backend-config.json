@@ -1,1 +1,10 @@
-{}
+{
+  "auth": {
+    "youup447a8ab5": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

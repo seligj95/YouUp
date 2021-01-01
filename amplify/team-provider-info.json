@@ -10,6 +10,11 @@
       "StackName": "amplify-youup-dev-164402",
       "StackId": "arn:aws:cloudformation:us-east-1:079047103768:stack/amplify-youup-dev-164402/968a9010-4c50-11eb-9037-0ea3a6460f01",
       "AmplifyAppId": "dsla6a4i6jj57"
+    },
+    "categories": {
+      "auth": {
+        "youup447a8ab5": {}
+      }
     }
   }
 }

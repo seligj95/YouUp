@@ -1,18 +1,28 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { withAuthenticator } from 'aws-amplify-react-native';
+import { Auth } from 'aws-amplify';
 
-export default function SettingsScreen() {
+
+function SettingsScreen() {
+  async function signOut() {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log('Error signing out: ', error);
+    }
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/SettingsScreen.tsx" />
+      <Button title="Sign Out" color="tomato" onPress={signOut} />
     </View>
   );
 }
+
+export default withAuthenticator(SettingsScreen)
 
 const styles = StyleSheet.create({
   container: {
