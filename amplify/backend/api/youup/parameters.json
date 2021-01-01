@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "youup",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authyouup447a8ab5",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
