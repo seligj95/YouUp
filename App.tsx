@@ -42,31 +42,27 @@ function App() {
             { id: userInfo.attributes.sub }
           )
         );
-        
         if (userData.data.getUser) {
           console.log("User is already registered in the DB");
           return;
-        }
-
+        };
         const newUser = {
           id: userInfo.attributes.sub,
           name: userInfo.username,
           imageUri: getRandomImage(),
-        }
-
+        };
+        // if there is no user in DB with the id, then create one
         await API.graphql(
           graphqlOperation(
             createUser,
             { input: newUser } 
           )
         )
+      };
 
-        // if there is no user in DB with the id, then create one
-      }
-
-    }
+    };
     fetchUser();
-  }, [])
+  }, []);
 
   if (!isLoadingComplete) {
     return null;

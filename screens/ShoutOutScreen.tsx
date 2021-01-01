@@ -6,7 +6,7 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import { Auth } from 'aws-amplify';
 
 
-function SettingsScreen() {
+function ShoutOutScreen() {
   async function signOut() {
     try {
       await Auth.signOut();
@@ -21,7 +21,7 @@ function SettingsScreen() {
   );
 }
 
-export default withAuthenticator(SettingsScreen)
+export default withAuthenticator(ShoutOutScreen)
 
 const styles = StyleSheet.create({
   container: {

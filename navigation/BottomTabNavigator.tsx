@@ -1,4 +1,4 @@
-import { Ionicons, Zocial } from '@expo/vector-icons';
+import { Ionicons, Zocial, AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -7,7 +7,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import StatusesScreen from '../screens/StatusesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import { BottomTabParamList, StatusesParamList, SettingsParamList } from '../types';
+import ShoutOutScreen from '../screens/ShoutOutScreen';
+import { BottomTabParamList, StatusesParamList, SettingsParamList, ShoutOutParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -33,6 +34,13 @@ export default function BottomTabNavigator() {
         component={StatusesTabNavigator}
         options={{
           tabBarIcon: ({ color }) => <Zocial name="statusnet" size={36} color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ShoutOut"
+        component={ShoutOutTabNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesign name="enviroment" size={36} color={ color } />,
         }}
       />
       <BottomTab.Screen
@@ -82,5 +90,19 @@ function SettingsTabNavigator() {
         options={{ headerTitle: 'Settings' }}
       />
     </SettingsTabStack.Navigator>
+  );
+}
+
+const ShoutOutTabStack = createStackNavigator<ShoutOutParamList>();
+
+function ShoutOutTabNavigator() {
+  return (
+    <ShoutOutTabStack.Navigator>
+      <ShoutOutTabStack.Screen
+        name="ShoutOutScreen"
+        component={ShoutOutScreen}
+        options={{ headerTitle: 'ShoutOut' }}
+      />
+    </ShoutOutTabStack.Navigator>
   );
 }

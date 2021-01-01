@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import StatusListItem from '../components/StatusListItem';
-import statusItems from '../data/StatusItems';
+import ContactListItem from '../components/ContactListItem';
+import users from '../data/Users';
 import { listUsers } from '../graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
-import ContactsButton from '../components/ContactsButton';
 
 const renderSeparator = () => {
     return (
@@ -19,36 +18,16 @@ const renderSeparator = () => {
     );
   };
 
-export default function StatusesScreen(this: any) {
-  
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const userData = await API.graphql(
-          graphqlOperation(
-            listUsers
-          )
-        )
-        setUsers(userData.data.listUsers.items);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    fetchUsers();
-  }, [])
-  
+export default function ContactsScreen(this: any) {
   return (
     <View style={styles.container}>
       <FlatList 
         style={{width: '100%'}}
-        data={statusItems} 
-        renderItem={({ item }) => <StatusListItem statusItem={item} />}
+        data={users} 
+        renderItem={({ item }) => <ContactListItem user={item} />}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={renderSeparator}
       />
-      <ContactsButton />
     </View>
   );
 }

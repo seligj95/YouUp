@@ -2,11 +2,14 @@ export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
   StatusUpdate: undefined;
+  Contacts: undefined;
+  ShoutOut: undefined;
 };
 
 export type BottomTabParamList = {
   Statuses: undefined;
   Settings: undefined;
+  ShoutOut: undefined;
 };
 
 export type StatusesParamList = {
@@ -17,10 +20,15 @@ export type SettingsParamList = {
   SettingsScreen: undefined;
 };
 
+export type ShoutOutParamList = {
+  ShoutOutScreen: undefined;
+};
+
 export type User = {
   id: String;
   name: String;
   imageUri: String;
+  publicMessage: String;
 };
 
 export type Tag = {
