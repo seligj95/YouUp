@@ -5,6 +5,7 @@ import statuses from '../data/Statuses';
 import tags from '../data/Tags';
 import StatusUpdate from '../components/StatusUpdate';
 import TagUpdate from '../components/TagUpdate';
+import StatusInputBox from '../components/StatusInputBox';
 
 const UserStatusUpdateScreen = () => {
   const route = useRoute();
@@ -17,7 +18,8 @@ const UserStatusUpdateScreen = () => {
         data={statuses.statuses} 
         renderItem={({ item }) => <StatusUpdate status={item} />}
       />
-      <FlatList 
+      <StatusInputBox />
+      <FlatList
         style={{width: '100%'}}
         data={tags.tags} 
         renderItem={({ item }) => <TagUpdate tag={item} />}
