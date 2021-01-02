@@ -1,28 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import statuses from '../data/Statuses';
 import tags from '../data/Tags';
 import StatusUpdate from '../components/StatusUpdate';
 import TagUpdate from '../components/TagUpdate';
 import StatusInputBox from '../components/StatusInputBox';
 import TagInputBox from '../components/TagInputBox/input';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { statusesByStatusRoom } from '../graphql/queries';
 
 const UserStatusUpdateScreen = () => {
   const route = useRoute();
-  // console.log(route.params)
+
+  const [statuses, setStatuses] = useState([]);
+  const [myId, setMyId] = useState(null);
+  
+  useEffect(() => {
+    const fetchStatuses = async () => {
+      const statusesData = await API.graphql(
+        graphqlOperation(
+          statusesByStatusRoom, {
+            statusRoomID: route.params.id,
+            sortDirection: 'DESC',
+          }
+        )
+      )
+      setStatuses(statusesData.data.statusesByStatusRoom.items);
+    }
+    fetchStatuses();
+  }, [])
+
+  useEffect(() => {
+    const getMyId = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      setMyId(userInfo.attributes.sub);
+    }
+    getMyId();
+  }, [])
 
   return (
     <View>
       <FlatList 
         style={{width: '100%'}}
-        data={statuses.statuses} 
-        renderItem={({ item }) => <StatusUpdate status={item} />}
+        data={statuses} 
+        renderItem={({ item }) => <StatusUpdate myId={myId} status={item} />}
         contentContainerStyle={{
           flexDirection: 'row'
         }}
       />
-      <StatusInputBox />
+      <StatusInputBox statusRoomID={route.params.id}/>
       <FlatList
         style={{width: '100%'}}
         data={tags.tags} 

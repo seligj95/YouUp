@@ -68,6 +68,9 @@ export const getStatusRoomUser = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -121,6 +124,17 @@ export const getStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -138,7 +152,118 @@ export const listStatusRooms = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getStatus = /* GraphQL */ `
+  query GetStatus($id: ID!) {
+    getStatus(id: $id) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const listStatuss = /* GraphQL */ `
+  query ListStatuss(
+    $filter: ModelStatusFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStatuss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const statusesByStatusRoom = /* GraphQL */ `
+  query StatusesByStatusRoom(
+    $statusRoomID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStatusFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    statusesByStatusRoom(
+      statusRoomID: $statusRoomID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          createdAt
+          updatedAt
+        }
         updatedAt
       }
       nextToken

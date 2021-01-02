@@ -90,6 +90,9 @@ export const onCreateStatusRoomUser = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -118,6 +121,9 @@ export const onUpdateStatusRoomUser = /* GraphQL */ `
       statusRoom {
         id
         statusRoomUsers {
+          nextToken
+        }
+        statuses {
           nextToken
         }
         createdAt
@@ -150,6 +156,9 @@ export const onDeleteStatusRoomUser = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -168,6 +177,17 @@ export const onCreateStatusRoom = /* GraphQL */ `
           userID
           statusRoomID
           createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
           updatedAt
         }
         nextToken
@@ -191,6 +211,17 @@ export const onUpdateStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -210,7 +241,120 @@ export const onDeleteStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateStatus = /* GraphQL */ `
+  subscription OnCreateStatus {
+    onCreateStatus {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const onUpdateStatus = /* GraphQL */ `
+  subscription OnUpdateStatus {
+    onUpdateStatus {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const onDeleteStatus = /* GraphQL */ `
+  subscription OnDeleteStatus {
+    onDeleteStatus {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       updatedAt
     }
   }

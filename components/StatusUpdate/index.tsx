@@ -7,13 +7,14 @@ import style from './style';
 
 export type StatusUpdateProps = {
   status: Status;
+  myId: String;
 };
 
 const StatusUpdate = (props: StatusUpdateProps) => {
-  const { status } = props;
+  const { status, myId } = props;
 
   const isUserStatus = () => {
-    return status.user.id === 'u1';
+    return status.user.id === myId;
   };
 
   return (

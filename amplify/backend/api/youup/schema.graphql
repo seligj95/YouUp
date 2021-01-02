@@ -21,4 +21,21 @@ type StatusRoomUser
 type StatusRoom @model {
   id: ID!
   statusRoomUsers: [StatusRoomUser] @connection(keyName: "byStatusRoom", fields: ["id"])
+  statuses: [Status] @connection(keyName: "byStatusRoom", fields: ["id"])
+}
+
+type Status 
+@model 
+@key(
+  name: "byStatusRoom", 
+  fields: ["statusRoomID", "createdAt"], 
+  queryField: "statusesByStatusRoom" 
+){
+  id: ID!
+  createdAt: String!
+  content: String!
+  userID: ID!
+  statusRoomID: ID!
+  user: User @connection(fields: ["userID"])
+  statusRoom: StatusRoom @connection(fields: ["statusRoomID"])
 }

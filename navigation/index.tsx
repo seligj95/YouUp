@@ -3,7 +3,7 @@ import { createStackNavigator, HeaderBackground } from '@react-navigation/stack'
 import * as React from 'react';
 import { ColorSchemeName, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 
 import UserStatusUpdateScreen from '../screens/UserStatusUpdateScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -65,7 +65,7 @@ function RootNavigator() {
             // make this a button that clears tags and resets status?
             <TouchableOpacity>
               <View style={{marginRight: 20}}>
-                <MaterialCommunityIcons name="restart" size={30} color={Colors.light.background} />
+                <AntDesign name="delete" size={30} color={Colors.light.background} />
               </View>
             </TouchableOpacity>
           ) 

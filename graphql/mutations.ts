@@ -102,6 +102,9 @@ export const createStatusRoomUser = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -133,6 +136,9 @@ export const updateStatusRoomUser = /* GraphQL */ `
       statusRoom {
         id
         statusRoomUsers {
+          nextToken
+        }
+        statuses {
           nextToken
         }
         createdAt
@@ -168,6 +174,9 @@ export const deleteStatusRoomUser = /* GraphQL */ `
         statusRoomUsers {
           nextToken
         }
+        statuses {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -189,6 +198,17 @@ export const createStatusRoom = /* GraphQL */ `
           userID
           statusRoomID
           createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
           updatedAt
         }
         nextToken
@@ -215,6 +235,17 @@ export const updateStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -237,7 +268,129 @@ export const deleteStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
+      updatedAt
+    }
+  }
+`;
+export const createStatus = /* GraphQL */ `
+  mutation CreateStatus(
+    $input: CreateStatusInput!
+    $condition: ModelStatusConditionInput
+  ) {
+    createStatus(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const updateStatus = /* GraphQL */ `
+  mutation UpdateStatus(
+    $input: UpdateStatusInput!
+    $condition: ModelStatusConditionInput
+  ) {
+    updateStatus(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const deleteStatus = /* GraphQL */ `
+  mutation DeleteStatus(
+    $input: DeleteStatusInput!
+    $condition: ModelStatusConditionInput
+  ) {
+    deleteStatus(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       updatedAt
     }
   }
