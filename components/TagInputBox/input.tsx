@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { TextInput, View, TouchableOpacity } from 'react-native';
 import style from './style';
 import { AntDesign } from '@expo/vector-icons';
 

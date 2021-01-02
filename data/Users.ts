@@ -2,7 +2,7 @@ export default [{
   id: 'u1',
   name: 'Vadim',
   imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg',
-  publicMessage: "Hello there, how are you"
+  shoutOut: "TALK TO ME!!!"
 }, {
   id: 'u2',
   name: 'Lukas',

@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { User } from '../../types';
 import style from './style';
 import { useNavigation } from '@react-navigation/native';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { createStatusRoom, createStatusRoomUser } from '../../graphql/mutations';
 
 export type ContactListItemProps = {
   user: User;
@@ -13,8 +15,55 @@ const ContactListItem = (props: ContactListItemProps) => {
 
   const navigation = useNavigation();
   
-  const onClick = () => {
+  const onClick = async () => {
     // navigate to status update page for this contact
+    try {
+      // create new status room
+      const newStatusRoomData = await API.graphql(
+        graphqlOperation(
+          createStatusRoom, { input: { } }
+        )
+      )
+
+      if (!newStatusRoomData.data) {
+        console.log("Failed to create a status room");
+        return;
+      }
+
+      const newStatusRoom = newStatusRoomData.data.createStatusRoom;
+
+      // add contact to status room
+      const newUserStatusRoom = await API.graphql(
+        graphqlOperation(
+          createStatusRoomUser, {
+            input: {
+              userID: user.id,
+              statusRoomID: newStatusRoom.id
+            }
+          }
+        )
+      )
+      // add authenticated user to status room
+      const userInfo = await Auth.currentAuthenticatedUser();
+      await API.graphql(
+        graphqlOperation(
+          createStatusRoomUser, {
+            input: {
+              userID: userInfo.attributes.sub,
+              statusRoomID: newStatusRoom.id
+            }
+          }
+        )
+      )
+
+      navigation.navigate('StatusUpdate', { 
+        id: newStatusRoom.id, 
+        name: "HardCoded Name",
+      })
+
+    } catch (e){
+      console.log(e);
+    }
   };
 
   return (
@@ -24,7 +73,7 @@ const ContactListItem = (props: ContactListItemProps) => {
           <Image source= {{ uri: user.imageUri }} style={style.avatar} />
           <View>
             <Text style={style.userName}>{user.name}</Text>
-            <Text style={style.publicMessage}>{user.publicMessage}</Text>
+            <Text style={style.shoutOut}>{user.shoutOut}</Text>
           </View>
         </View>
       </View>

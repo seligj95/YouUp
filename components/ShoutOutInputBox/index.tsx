@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { TextInput, View, TouchableOpacity } from 'react-native';
+import { TextInput, View, TouchableOpacity, Text } from 'react-native';
 import style from './style';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
-const StatusInputBox = () => {
-  const [status, setStatus] = useState('');
+const ShoutOutInputBox = () => {
+  const [shoutOut, setShoutOut] = useState('');
 
   const onSendPress = () => {
-    console.warn(`Sending: ${status}`)
+    console.warn(`Setting shoutout to: ${shoutOut}`)
 
-    // send status to the backend
+    // send shoutout to the backend
     
-    setStatus('');
+    setShoutOut('');
 }
 
   const onPress = () => {
-    if (!status) {
+    if (!shoutOut) {
       null;
     } else {
       onSendPress();
@@ -28,16 +28,16 @@ const StatusInputBox = () => {
         <TextInput 
           style={style.textInput} 
           multiline
-          placeholder={'Set New Status'}
+          placeholder={'Set New ShoutOut...'}
           placeholderTextColor='grey'
-          value={status}
-          onChangeText={setStatus}
+          value={shoutOut}
+          onChangeText={setShoutOut}
         />
       </View>
-      {!status ? null :
+      {!shoutOut ? null :
         <TouchableOpacity onPress={onPress}>
           <View style={style.buttonContainer}>
-            <FontAwesome name="send" size={24} color="white" />
+            <AntDesign name="notification" size={24} color="white" />
           </View>
         </TouchableOpacity>
       }
@@ -45,4 +45,4 @@ const StatusInputBox = () => {
   )
 };
 
-export default StatusInputBox;
+export default ShoutOutInputBox;

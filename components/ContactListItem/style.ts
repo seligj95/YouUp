@@ -21,7 +21,7 @@ const style = StyleSheet.create({
     fontSize: 16,
     justifyContent: 'center'
   },
-  publicMessage: {
+  shoutOut: {
     fontSize: 16,
     color: 'grey',
   },

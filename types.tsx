@@ -28,7 +28,7 @@ export type User = {
   id: String;
   name: String;
   imageUri: String;
-  publicMessage: String;
+  shoutOut: String;
 };
 
 export type Tag = {

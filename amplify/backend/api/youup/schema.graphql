@@ -2,4 +2,23 @@ type User @model {
   id: ID!
   name: String!
   imageUri: String
+  shoutOut: String
+  statusRoomUser: [StatusRoomUser] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type StatusRoomUser 
+@model 
+@key(name: "byUser", fields: ["userID", "statusRoomID"])
+@key(name: "byStatusRoom", fields: ["statusRoomID", "userID"])
+{
+  id: ID!
+  userID: ID!
+  statusRoomID: ID!
+  user: User @connection(fields: ["userID"])
+  statusRoom: StatusRoom @connection(fields: ["statusRoomID"])
+}
+
+type StatusRoom @model {
+  id: ID!
+  statusRoomUsers: [StatusRoomUser] @connection(keyName: "byStatusRoom", fields: ["id"])
 }
