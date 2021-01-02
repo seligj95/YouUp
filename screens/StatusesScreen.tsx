@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import StatusListItem from '../components/StatusListItem';
 import statusItems from '../data/StatusItems';
-import { listUsers } from '../graphql/queries';
-import { API, graphqlOperation } from 'aws-amplify';
+import { getUser } from './queries';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import ContactsButton from '../components/ContactsButton';
 
 const renderSeparator = () => {
@@ -19,32 +19,37 @@ const renderSeparator = () => {
     );
   };
 
-export default function StatusesScreen(this: any) {
-  
-  const [users, setUsers] = useState([]);
+export default function StatusesScreen() {
+
+  const [statusRooms, setStatusRooms] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchStatusRooms = async () => {
       try {
+        const userInfo = await Auth.currentAuthenticatedUser();
+
         const userData = await API.graphql(
           graphqlOperation(
-            listUsers
+            getUser, {
+              id: userInfo.attributes.sub,
+            }
           )
         )
-        setUsers(userData.data.listUsers.items);
+        setStatusRooms(userData.data.getUser.statusRoomUser.items)
+        console.log(userData);
       } catch (e) {
         console.log(e);
       }
     }
-    fetchUsers();
+    fetchStatusRooms();
   }, [])
   
   return (
     <View style={styles.container}>
       <FlatList 
         style={{width: '100%'}}
-        data={statusItems} 
-        renderItem={({ item }) => <StatusListItem statusItem={item} />}
+        data={statusRooms} 
+        renderItem={({ item }) => <StatusListItem statusRoom={item.statusRoom} />}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={renderSeparator}
       />

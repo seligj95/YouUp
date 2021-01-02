@@ -17,6 +17,8 @@ const ContactListItem = (props: ContactListItemProps) => {
   
   const onClick = async () => {
     // navigate to status update page for this contact
+    //check if status room already exists for this user. 
+    //if so, navigate to that room instead of creating a new one
     try {
       // create new status room
       const newStatusRoomData = await API.graphql(
