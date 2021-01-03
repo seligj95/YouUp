@@ -23,7 +23,12 @@ const ContactListItem = (props: ContactListItemProps) => {
       // create new status room
       const newStatusRoomData = await API.graphql(
         graphqlOperation(
-          createStatusRoom, { input: { } }
+          createStatusRoom, { 
+            input: {
+              lastUserStatusID: "xxa63a1a-530e-4acc-aeb3-996258a74fab",
+              lastContactStatusID: "zza63a1a-530e-4acc-aeb3-996258a74fab",
+            }
+          }
         )
       )
 
