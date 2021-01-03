@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import StatusListItem from '../components/StatusListItem';
-import statusItems from '../data/StatusItems';
 import { getUser } from './queries';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import ContactsButton from '../components/ContactsButton';
@@ -36,7 +35,7 @@ export default function StatusesScreen() {
           )
         )
         setStatusRooms(userData.data.getUser.statusRoomUser.items)
-        console.log(userData);
+        //console.log(userData.data.getUser.statusRoomUser.items);
       } catch (e) {
         console.log(e);
       }
