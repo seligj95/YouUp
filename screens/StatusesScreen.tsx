@@ -35,7 +35,6 @@ export default function StatusesScreen() {
           )
         )
         setStatusRooms(userData.data.getUser.statusRoomUser.items)
-        //console.log(userData.data.getUser.statusRoomUser.items);
       } catch (e) {
         console.log(e);
       }

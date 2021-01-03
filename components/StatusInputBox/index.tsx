@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, View, TouchableOpacity } from 'react-native';
+import { TextInput, View, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
@@ -66,12 +66,13 @@ const StatusInputBox = (props) => {
         )
       )
       // not working, setting the last user status on every update
+      console.log(newStatusData)
       if (newStatusData.data.createStatus.user.id === myUserId) {
         await updateLastUserStatus(newStatusData.data.createStatus.id)
       } else {
         await updateLastContactStatus(newStatusData.data.createStatus.id)
       }
-      console.log(newStatusData)
+      // console.log(newStatusData)
     } catch (e) {
       console.log(e);
     }
@@ -88,25 +89,31 @@ const StatusInputBox = (props) => {
   };
 
   return (
-    <View style={style.container}>
-      <View style={style.mainContainer}>
-        <TextInput 
-          style={style.textInput} 
-          multiline
-          placeholder={'Set New Status'}
-          placeholderTextColor='grey'
-          value={status}
-          onChangeText={setStatus}
-        />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+      style={{width: '100%'}}
+    >
+      <View style={style.container}>
+        <View style={style.mainContainer}>
+          <TextInput 
+            style={style.textInput} 
+            multiline
+            placeholder={'Set New Status'}
+            placeholderTextColor='grey'
+            value={status}
+            onChangeText={setStatus}
+          />
+        </View>
+        {!status ? null :
+          <TouchableOpacity onPress={onPress}>
+            <View style={style.buttonContainer}>
+              <FontAwesome name="send" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
+        }
       </View>
-      {!status ? null :
-        <TouchableOpacity onPress={onPress}>
-          <View style={style.buttonContainer}>
-            <FontAwesome name="send" size={24} color="white" />
-          </View>
-        </TouchableOpacity>
-      }
-    </View>
+    </KeyboardAvoidingView>
   )
 };
 

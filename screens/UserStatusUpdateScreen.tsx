@@ -8,6 +8,7 @@ import StatusInputBox from '../components/StatusInputBox';
 import TagInputBox from '../components/TagInputBox/input';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { statusesByStatusRoom } from '../graphql/queries';
+import { onCreateStatus } from '../graphql/subscriptions';
 
 const UserStatusUpdateScreen = () => {
   const route = useRoute();
@@ -37,6 +38,23 @@ const UserStatusUpdateScreen = () => {
     }
     getMyId();
   }, [])
+
+  useEffect(() => {
+    const subsctiption = API.graphql(
+      graphqlOperation(onCreateStatus)
+    ).subscribe({
+      next: (data) => {
+        const newStatus = data.value.data.onCreateStatus;
+        if (newStatus.statusRoomID !== route.params.id) {
+          console.log('status is in another room')
+          return;
+        }
+        //fetchStatuses();
+        setStatuses([newStatus, ...statuses]);
+      }
+    });
+    return () => subsctiption.unsubscribe();
+  }, [statuses])
 
   return (
     <View>
