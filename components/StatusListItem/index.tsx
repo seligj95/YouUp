@@ -45,21 +45,25 @@ const StatusListItem = (props: StatusListItemProps) => {
         <View style={style.contactNameContainer}>
           <Text style={style.contactName}>{otherUser.name}</Text>
         </View>
-        {/* <View style={style.contactStatusContainer}>
+        <View style={style.contactStatusContainer}>
           <Text style={style.contactStatus}>
-              {contactStatus}
+            {statusRoom.lastContactStatus
+              ? `${statusRoom.lastContactStatus.content}`
+              : ""}
           </Text>
           <Text style={style.lastUpdate}>
             {'Last Updated:\n'}
-            {contactStatusUpdatedAt}
+            {statusRoom.lastContactStatus && moment(statusRoom.lastContactStatus.updatedAt).format('MM/DD/YY, h:mm a')}
           </Text>
-        </View> */}
+        </View>
       </View>
       <TouchableWithoutFeedback onPress={onClick}>
         <View style={style.userStatusContainer}>
           <Text style={style.userStatus}>
-            Set Status: 
-            {/* {userStatus} */}
+            {'Status: '}
+            {statusRoom.lastUserStatus
+              ? `${statusRoom.lastUserStatus.content}`
+              : ""}
           </Text>
         </View>
       </TouchableWithoutFeedback>

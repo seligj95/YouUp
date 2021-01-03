@@ -105,8 +105,17 @@ export const createStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -150,8 +159,17 @@ export const updateStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -195,8 +213,17 @@ export const deleteStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -240,8 +267,8 @@ export const createStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
-      lastStatusID
-      lastStatus {
+      lastUserStatusID
+      lastUserStatus {
         id
         createdAt
         content
@@ -257,7 +284,32 @@ export const createStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      lastContactStatusID
+      lastContactStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -296,8 +348,8 @@ export const updateStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
-      lastStatusID
-      lastStatus {
+      lastUserStatusID
+      lastUserStatus {
         id
         createdAt
         content
@@ -313,7 +365,32 @@ export const updateStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      lastContactStatusID
+      lastContactStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -352,8 +429,8 @@ export const deleteStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
-      lastStatusID
-      lastStatus {
+      lastUserStatusID
+      lastUserStatus {
         id
         createdAt
         content
@@ -369,7 +446,32 @@ export const deleteStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      lastContactStatusID
+      lastContactStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -410,8 +512,17 @@ export const createStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -456,8 +567,17 @@ export const updateStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -502,8 +622,17 @@ export const deleteStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content

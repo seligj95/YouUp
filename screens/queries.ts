@@ -21,24 +21,25 @@ export const getUser = /* GraphQL */ `
                   name
                   imageUri
                   shoutOut
-                  statusRoomUser {
-                    items {
-                      statusRoom {
-                        statuses {
-                          items {
-                            id
-                            content
-                            updatedAt
-                            user {
-                              name
-                              id
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
                 }
+              }
+            }
+            lastUserStatus {
+              id
+              content
+              updatedAt
+              user {
+                id
+                name
+              }
+            }
+            lastContactStatus {
+              id
+              content
+              updatedAt
+              user {
+                id
+                name
               }
             }
           }

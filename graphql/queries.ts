@@ -71,8 +71,17 @@ export const getStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -109,7 +118,8 @@ export const listStatusRoomUsers = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -145,8 +155,8 @@ export const getStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
-      lastStatusID
-      lastStatus {
+      lastUserStatusID
+      lastUserStatus {
         id
         createdAt
         content
@@ -162,7 +172,32 @@ export const getStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      lastContactStatusID
+      lastContactStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -188,8 +223,17 @@ export const listStatusRooms = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -231,8 +275,17 @@ export const getStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastStatusID
-        lastStatus {
+        lastUserStatusID
+        lastUserStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        lastContactStatusID
+        lastContactStatus {
           id
           createdAt
           content
@@ -270,7 +323,8 @@ export const listStatuss = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -313,7 +367,8 @@ export const statusesByStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastStatusID
+          lastUserStatusID
+          lastContactStatusID
           createdAt
           updatedAt
         }

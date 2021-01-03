@@ -25,7 +25,7 @@ const StatusInputBox = (props) => {
           updateStatusRoom, {
             input: {
               id: statusRoomID,
-              lastStatusID: statusId,
+              lastUserStatusID: statusId,
             }
           }
         )
