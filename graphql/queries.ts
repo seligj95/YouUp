@@ -71,6 +71,15 @@ export const getStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        lastStatusID
+        lastStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -100,6 +109,7 @@ export const listStatusRoomUsers = /* GraphQL */ `
         }
         statusRoom {
           id
+          lastStatusID
           createdAt
           updatedAt
         }
@@ -135,6 +145,29 @@ export const getStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastStatusID
+      lastStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          lastStatusID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -154,6 +187,15 @@ export const listStatusRooms = /* GraphQL */ `
         }
         statuses {
           nextToken
+        }
+        lastStatusID
+        lastStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
         }
         createdAt
         updatedAt
@@ -189,6 +231,15 @@ export const getStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
+        lastStatusID
+        lastStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -219,6 +270,7 @@ export const listStatuss = /* GraphQL */ `
         }
         statusRoom {
           id
+          lastStatusID
           createdAt
           updatedAt
         }
@@ -261,6 +313,7 @@ export const statusesByStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
+          lastStatusID
           createdAt
           updatedAt
         }

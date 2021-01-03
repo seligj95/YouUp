@@ -3,7 +3,7 @@ import { TextInput, View, TouchableOpacity } from 'react-native';
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { createStatus } from '../../graphql/mutations';
+import { createStatus, updateStatusRoom } from '../../graphql/mutations';
 
 const StatusInputBox = (props) => {
   const { statusRoomID } = props;
@@ -18,10 +18,26 @@ const StatusInputBox = (props) => {
     fetchUser();
   }, []);
 
-  const onSendPress = async () => {
-    // send status to the backend
+  const updateStatusRoomLastStatus = async (statusId: string) => {
     try {
       await API.graphql(
+        graphqlOperation(
+          updateStatusRoom, {
+            input: {
+              id: statusRoomID,
+              lastStatusID: statusId,
+            }
+          }
+        )
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const onSendPress = async () => {
+    try {
+      const newStatusData = await API.graphql(
         graphqlOperation(
           createStatus, {
             input: {
@@ -32,6 +48,8 @@ const StatusInputBox = (props) => {
           }
         )
       )
+      await updateStatusRoomLastStatus(newStatusData.data.createStatus.id)
+      console.log(newStatusData)
     } catch (e) {
       console.log(e);
     }

@@ -22,6 +22,8 @@ type StatusRoom @model {
   id: ID!
   statusRoomUsers: [StatusRoomUser] @connection(keyName: "byStatusRoom", fields: ["id"])
   statuses: [Status] @connection(keyName: "byStatusRoom", fields: ["id"])
+  lastStatusID: ID!
+  lastStatus: Status @connection(fields: ["lastStatusID"])
 }
 
 type Status 

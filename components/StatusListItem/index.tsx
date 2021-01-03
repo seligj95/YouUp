@@ -15,7 +15,6 @@ const StatusListItem = (props: StatusListItemProps) => {
   const [otherUser, setOtherUser] = useState(null);
 
   const navigation = useNavigation();
-  //determine who is the user and who is the contact, and associate statuses
   useEffect(() => {
     const getOtherUser = async () => {
       const userInfo = await Auth.currentAuthenticatedUser();
@@ -26,8 +25,11 @@ const StatusListItem = (props: StatusListItemProps) => {
       }
     }
     getOtherUser();
-    // console.log(statusRoom.statusRoomUsers.items[0].user.statusRoomUser.items[0].statusRoom.statuses.items[0].content);
   }, [])
+
+  if (!otherUser) {
+    return null;
+  }
   
   const onClick = () => {
     navigation.navigate('StatusUpdate', { 
@@ -36,15 +38,6 @@ const StatusListItem = (props: StatusListItemProps) => {
     })
   };
 
-  if (!otherUser) {
-    return null;
-  }
-  const otherUserStatusCheck = otherUser.statusRoomUser.items[0].statusRoom.statuses.items;
-  const otherUserUpdatedAt = moment(otherUser.statusRoomUser.items[0].statusRoom.statuses.items[1].updatedAt).format('MM/DD/YY, h:mm a');
-  const otherUserStatus = otherUser.statusRoomUser.items[0].statusRoom.statuses.items[1].content;
-  const userStatus = statusRoom.statusRoomUsers.items[0].user.statusRoomUser.items[0].statusRoom.statuses.items[0].content;
-  const userStatusCheck = statusRoom.statusRoomUsers.items[0].user.statusRoomUser.items[0].statusRoom.statuses.items;
-
   return (
     <View style={style.container}>
       <View style={style.leftContainer}>
@@ -52,27 +45,21 @@ const StatusListItem = (props: StatusListItemProps) => {
         <View style={style.contactNameContainer}>
           <Text style={style.contactName}>{otherUser.name}</Text>
         </View>
-        <View style={style.contactStatusContainer}>
+        {/* <View style={style.contactStatusContainer}>
           <Text style={style.contactStatus}>
-              {otherUserStatusCheck ? 
-              otherUserStatus : 
-              ""}
+              {contactStatus}
           </Text>
           <Text style={style.lastUpdate}>
             {'Last Updated:\n'}
-            {otherUserStatusCheck
-            && 
-            otherUserUpdatedAt}
+            {contactStatusUpdatedAt}
           </Text>
-        </View>
+        </View> */}
       </View>
       <TouchableWithoutFeedback onPress={onClick}>
         <View style={style.userStatusContainer}>
           <Text style={style.userStatus}>
             Set Status: 
-            {userStatusCheck ? 
-            userStatus : 
-            ""}
+            {/* {userStatus} */}
           </Text>
         </View>
       </TouchableWithoutFeedback>

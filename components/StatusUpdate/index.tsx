@@ -4,7 +4,6 @@ import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { Status } from '../../types';
 import style from './style';
 
-
 export type StatusUpdateProps = {
   status: Status;
   myId: String;
