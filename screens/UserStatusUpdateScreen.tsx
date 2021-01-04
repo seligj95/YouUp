@@ -49,7 +49,6 @@ const UserStatusUpdateScreen = () => {
           console.log('status is in another room')
           return;
         }
-        //fetchStatuses();
         setStatuses([newStatus, ...statuses]);
       }
     });

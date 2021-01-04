@@ -3,11 +3,13 @@ import { View, Text } from 'react-native';
 import ShoutOutInputBox from '../components/ShoutOutInputBox';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { getUser} from './queries'
+import { onUpdateUser } from '../graphql/subscriptions';
 
 export default function ShoutOutScreen() {
 
   const [shoutOut, setShoutOut] = useState('');
-
+  //const [myId, setMyId] = useState(null);
+  
   useEffect(() => {
     const fetchShoutOuts = async () => {
       try {
@@ -27,6 +29,30 @@ export default function ShoutOutScreen() {
     }
     fetchShoutOuts();
   }, [])
+
+  // useEffect(() => {
+  //   const getMyId = async () => {
+  //     const userInfo = await Auth.currentAuthenticatedUser();
+  //     setMyId(userInfo.attributes.sub);
+  //   }
+  //   getMyId();
+  // }, [])
+
+  useEffect(() => {
+    const subsctiption = API.graphql(
+      graphqlOperation(onUpdateUser)
+    ).subscribe({
+      next: (data) => {
+        const newShoutOut = data.value.data.onUpdateUser.shoutOut;
+        // if (newShoutOut !== myId) {
+        //   console.log('someone else updated a shoutout')
+        //   return;
+        // }
+        setShoutOut([newShoutOut]);
+      }
+    });
+    return () => subsctiption.unsubscribe();
+  }, [shoutOut])
 
   return (
     <View>

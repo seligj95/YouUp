@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { User } from '../../types';
 import style from './style';
@@ -70,7 +70,7 @@ const ContactListItem = (props: ContactListItemProps) => {
 
     } catch (e){
       console.log(e);
-    }
+    }  
   };
 
   return (
