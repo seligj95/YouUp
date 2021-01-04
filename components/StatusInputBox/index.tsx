@@ -35,22 +35,22 @@ const StatusInputBox = (props) => {
     }
   }
 
-  const updateLastContactStatus = async (statusId: string) => {
-    try {
-      await API.graphql(
-        graphqlOperation(
-          updateStatusRoom, {
-            input: {
-              id: statusRoomID,
-              lastContactStatusID: statusId,
-            }
-          }
-        )
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // const updateLastContactStatus = async (statusId: string) => {
+  //   try {
+  //     await API.graphql(
+  //       graphqlOperation(
+  //         updateStatusRoom, {
+  //           input: {
+  //             id: statusRoomID,
+  //             lastContactStatusID: statusId,
+  //           }
+  //         }
+  //       )
+  //     );
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   const onSendPress = async () => {
     try {
@@ -65,14 +65,7 @@ const StatusInputBox = (props) => {
           }
         )
       )
-      // not working, setting the last user status on every update
-      console.log(newStatusData)
-      if (newStatusData.data.createStatus.user.id === myUserId) {
-        await updateLastUserStatus(newStatusData.data.createStatus.id)
-      } else {
-        await updateLastContactStatus(newStatusData.data.createStatus.id)
-      }
-      // console.log(newStatusData)
+      await updateLastUserStatus(newStatusData.data.createStatus.id)
     } catch (e) {
       console.log(e);
     }

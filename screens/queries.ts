@@ -51,3 +51,18 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
+
+export const getLastStatuses = /* GraphQL */ `
+  query GetLastStatuses {
+    getStatusRoom($id: ID!) {
+      statuses {
+        items {
+          id
+          content
+          userID
+          createdAt
+        }
+      }
+    }
+  }
+`;
