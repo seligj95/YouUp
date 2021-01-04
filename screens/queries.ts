@@ -52,9 +52,10 @@ export const getUser = /* GraphQL */ `
   }
 `;
 
-export const getLastStatuses = /* GraphQL */ `
-  query GetLastStatuses {
-    getStatusRoom($id: ID!) {
+export const getStatusRoomStatuses = /* GraphQL */ `
+  query GetStatusRoomStatuses($id: ID!) {
+    getStatusRoom(id: $id) {
+      id
       statuses {
         items {
           id

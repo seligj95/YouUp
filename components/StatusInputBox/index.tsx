@@ -35,23 +35,6 @@ const StatusInputBox = (props) => {
     }
   }
 
-  // const updateLastContactStatus = async (statusId: string) => {
-  //   try {
-  //     await API.graphql(
-  //       graphqlOperation(
-  //         updateStatusRoom, {
-  //           input: {
-  //             id: statusRoomID,
-  //             lastContactStatusID: statusId,
-  //           }
-  //         }
-  //       )
-  //     );
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
   const onSendPress = async () => {
     try {
       const newStatusData = await API.graphql(
