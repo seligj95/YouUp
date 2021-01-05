@@ -57,28 +57,30 @@ const UserStatusUpdateScreen = () => {
   }, [statuses])
 
   return (
-    <View>
-      <FlatList 
-        style={{width: '100%'}}
-        data={statuses} 
-        renderItem={({ item }) => <StatusUpdate myId={myId} status={item} />}
-        contentContainerStyle={{
-          flexDirection: 'row'
-        }}
-      />
-      <StatusInputBox statusRoomID={route.params.id}/>
-      <FlatList
-        style={{width: '100%'}}
-        data={tags.tags} 
-        renderItem={({ item }) => <TagUpdate tag={item} />}
-        contentContainerStyle={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-        }}
-      />
-      <TagInputBox />
+    <React.Fragment>
+      <View>
+        <FlatList 
+          style={{width: '100%'}}
+          data={statuses} 
+          renderItem={({ item }) => <StatusUpdate myId={myId} status={item} />}
+          contentContainerStyle={{
+            flexDirection: 'row'
+          }}
+        />
+        <StatusInputBox statusRoomID={route.params.id}/>
+        <FlatList
+          style={{width: '100%'}}
+          data={tags.tags} 
+          renderItem={({ item }) => <TagUpdate tag={item} />}
+          contentContainerStyle={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }}
+        />
+        <TagInputBox />
+      </View>
       <DeleteStatusRoomButton />
-    </View>
+    </React.Fragment>
   );
 }
 
