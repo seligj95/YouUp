@@ -4,6 +4,7 @@ import ShoutOutInputBox from '../components/ShoutOutInputBox';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { getUser} from './queries'
 import { onUpdateUser } from '../graphql/subscriptions';
+import ClearShoutOutButton from '../components/ClearShoutOutButton';
 
 export default function ShoutOutScreen() {
 
@@ -44,10 +45,6 @@ export default function ShoutOutScreen() {
     ).subscribe({
       next: (data) => {
         const newShoutOut = data.value.data.onUpdateUser.shoutOut;
-        // if (newShoutOut !== myId) {
-        //   console.log('someone else updated a shoutout')
-        //   return;
-        // }
         setShoutOut([newShoutOut]);
       }
     });
@@ -55,14 +52,17 @@ export default function ShoutOutScreen() {
   }, [shoutOut])
 
   return (
-    <View>
-      <Text>
-        {shoutOut
-          ? `Your current ShoutOut is set to: ${shoutOut}`
-          : 'You have not set a ShoutOut'}
-      </Text>
-      <ShoutOutInputBox />
-    </View>
+    <React.Fragment>
+      <View>
+        <Text>
+          {shoutOut
+            ? `Your current ShoutOut is set to: ${shoutOut}`
+            : 'You have not set a ShoutOut'}
+        </Text>
+        <ShoutOutInputBox />
+      </View>
+      <ClearShoutOutButton />
+    </React.Fragment>
   );
 }
 

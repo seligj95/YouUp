@@ -9,6 +9,7 @@ import TagInputBox from '../components/TagInputBox/input';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { statusesByStatusRoom } from '../graphql/queries';
 import { onCreateStatus } from '../graphql/subscriptions';
+import DeleteStatusRoomButton from '../components/DeleteStatusRoomButton';
 
 const UserStatusUpdateScreen = () => {
   const route = useRoute();
@@ -76,6 +77,7 @@ const UserStatusUpdateScreen = () => {
         }}
       />
       <TagInputBox />
+      <DeleteStatusRoomButton />
     </View>
   );
 }
