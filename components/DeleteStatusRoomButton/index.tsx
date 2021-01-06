@@ -30,7 +30,7 @@ const DeleteStatusRoomButton = () => {
     }
     fetchStatuses();
   }, [])
-  // this is returning an empty array...
+  // this is returning an empty array...if this works, don't need above query
   useEffect(() => {
     const fetchStatusRoomUsers = async () => {
       const roomUsersData = await API.graphql(
@@ -47,66 +47,66 @@ const DeleteStatusRoomButton = () => {
     fetchStatusRoomUsers();
   }, [])
 
-  const deleteStatusRoomOnPress = async () => {
-    try {
-      await API.graphql(
-        graphqlOperation(
-          deleteStatusRoom, {
-            input: {
-              id: route.params.id,
-            }
-          }
-        )
-      )
-      console.log('deleting room: ', route.params.id)
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // const deleteStatusRoomOnPress = async () => {
+  //   try {
+  //     await API.graphql(
+  //       graphqlOperation(
+  //         deleteStatusRoom, {
+  //           input: {
+  //             id: route.params.id,
+  //           }
+  //         }
+  //       )
+  //     )
+  //     console.log('deleting room: ', route.params.id)
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
-  const deleteStatusRoomUsers = async () => {
-    try {
-      var i;
-      for (let i = 0; i < statusRoomUsers.length; i++) {
-        await API.graphql(
-          graphqlOperation(
-            deleteStatusRoomUser, {
-              input: {
-                id: statusRoomUsers[i],
-              }
-            }
-          )
-        )
-        console.log('deleting status room user: ', statusRoomUsers[i])
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // const deleteStatusRoomUsers = async () => {
+  //   try {
+  //     var i;
+  //     for (let i = 0; i < statusRoomUsers.length; i++) {
+  //       await API.graphql(
+  //         graphqlOperation(
+  //           deleteStatusRoomUser, {
+  //             input: {
+  //               id: statusRoomUsers[i],
+  //             }
+  //           }
+  //         )
+  //       )
+  //       console.log('deleting status room user: ', statusRoomUsers[i])
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
-  const deleteStatuses = async () => {
-    try {
-      for (let i = 0; i < statuses.length; i++) {
-        await API.graphql(
-          graphqlOperation(
-            deleteStatus, {
-              input: {
-                id: statuses[i],
-              }
-            }
-          )
-        )
-        console.log('deleting status: ', statuses[i])
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // const deleteStatuses = async () => {
+  //   try {
+  //     for (let i = 0; i < statuses.length; i++) {
+  //       await API.graphql(
+  //         graphqlOperation(
+  //           deleteStatus, {
+  //             input: {
+  //               id: statuses[i],
+  //             }
+  //           }
+  //         )
+  //       )
+  //       console.log('deleting status: ', statuses[i])
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   const onPress = () => {
-    deleteStatusRoomOnPress();
-    deleteStatusRoomUsers();
-    deleteStatuses();
+    // deleteStatusRoomOnPress();
+    // deleteStatusRoomUsers();
+    // deleteStatuses();
     console.log(statusRoomUsers);
   };
 

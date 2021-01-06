@@ -67,3 +67,24 @@ export const getStatusRoomStatuses = /* GraphQL */ `
     }
   }
 `;
+
+export const myStatusRooms = /* GraphQL */ `
+  query MyStatusRooms($id: ID!) {
+    getUser(id: $id) {
+      statusRoomUser {
+        items {
+          statusRoom {
+            statusRoomUsers {
+              items {
+                statusRoomID
+                user {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

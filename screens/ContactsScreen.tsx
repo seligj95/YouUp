@@ -46,8 +46,11 @@ export default function ContactsScreen(this: any) {
     fetchUser();
   }, []);
 
-  const filteredUsers = users.filter((item) => item.id !== myUserId);
-  
+  const allUsersExceptMe = users.filter((item) => item.id !== myUserId);
+  // filter out contacts who you have an existing status room with?
+  // or keep and just navigate to that status room?
+  const filteredUsers = allUsersExceptMe;
+
   return (
     <View style={styles.container}>
       <FlatList 

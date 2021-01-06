@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { User } from '../../types';
 import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { createStatusRoom, createStatusRoomUser } from '../../graphql/mutations';
+import { myStatusRooms } from '../../screens/queries'
 
 export type ContactListItemProps = {
   user: User;
@@ -12,14 +13,24 @@ export type ContactListItemProps = {
 
 const ContactListItem = (props: ContactListItemProps) => {
   const { user } = props;
+  const [userStatusRooms, setUserStatusRooms] = useState([]);
 
   const navigation = useNavigation();
+
+
   
   const onClick = async () => {
     // navigate to status update page for this contact
     //check if status room already exists for this user. 
     //if so, navigate to that room instead of creating a new one
     try {
+      const userInfo = await Auth.currentAuthenticatedUser();
+
+      // query for status rooms for user
+
+      // check if authenticated user already has room with user.id
+      // if yes, navigate to that room, else create new room.
+
       // create new status room
       const newStatusRoomData = await API.graphql(
         graphqlOperation(
@@ -51,7 +62,6 @@ const ContactListItem = (props: ContactListItemProps) => {
         )
       )
       // add authenticated user to status room
-      const userInfo = await Auth.currentAuthenticatedUser();
       await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
