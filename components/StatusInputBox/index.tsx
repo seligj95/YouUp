@@ -3,7 +3,7 @@ import { TextInput, View, TouchableOpacity, KeyboardAvoidingView, Platform } fro
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { createStatus, updateStatusRoomUser } from '../../graphql/mutations';
+import { createStatus, updateStatusRoomUser, deleteStatus } from '../../graphql/mutations';
 import { getStatusRoom } from '../../graphql/queries';
 
 const StatusInputBox = (props) => {
@@ -11,6 +11,7 @@ const StatusInputBox = (props) => {
   const [status, setStatus] = useState('');
   const [myUserId, setMyUserId] = useState(null);
   const [myStatusRoomID, setMyStatusRoomID] = useState(null);
+  const [myLastStatusID, setMyLastStatusID] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -32,8 +33,10 @@ const StatusInputBox = (props) => {
         )
         if (statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].userId === myUserId) {
           setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].id);
+          setMyLastStatusID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].lastStatusID);
         } else {
           setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[1].id);
+          setMyLastStatusID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[1].lastStatusID);
         }
       } catch (e) {
         console.log(e)
@@ -60,6 +63,23 @@ const StatusInputBox = (props) => {
     }
   }
 
+  const deleteLastStatus = async () => {
+    try {
+      await API.graphql(
+        graphqlOperation(
+          deleteStatus, {
+            input: {
+              id: myLastStatusID
+            }
+          }
+        )
+      );
+      console.log(myLastStatusID)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const onSendPress = async () => {
     try {
       const newStatusData = await API.graphql(
@@ -72,7 +92,9 @@ const StatusInputBox = (props) => {
             }
           }
         )
-      )
+      );
+      console.log(newStatusData.data.createStatus.id)
+      deleteLastStatus();
       await updateLastUserStatus(newStatusData.data.createStatus.id)
     } catch (e) {
       console.log(e);
