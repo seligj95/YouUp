@@ -3,12 +3,14 @@ import { TextInput, View, TouchableOpacity, KeyboardAvoidingView, Platform } fro
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { createStatus, updateStatusRoom } from '../../graphql/mutations';
+import { createStatus, updateStatusRoomUser } from '../../graphql/mutations';
+import { getStatusRoom } from '../../graphql/queries';
 
 const StatusInputBox = (props) => {
   const { statusRoomID } = props;
   const [status, setStatus] = useState('');
   const [myUserId, setMyUserId] = useState(null);
+  const [myStatusRoomID, setMyStatusRoomID] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -18,14 +20,37 @@ const StatusInputBox = (props) => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    const fetchStatusRoomUserID = async () => {
+      try {
+        const statusRoomData = await API.graphql(
+          graphqlOperation(
+            getStatusRoom, {
+              id: statusRoomID,
+            }
+          )
+        )
+        if (statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].userId === myUserId) {
+          setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].id);
+        } else {
+          setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[1].id);
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchStatusRoomUserID();
+  }, []);
+
+
   const updateLastUserStatus = async (statusId: string) => {
     try {
       await API.graphql(
         graphqlOperation(
-          updateStatusRoom, {
+          updateStatusRoomUser, {
             input: {
-              id: statusRoomID,
-              lastUserStatusID: statusId,
+              id: myStatusRoomID,
+              lastStatusID: statusId,
             }
           }
         )
@@ -61,6 +86,7 @@ const StatusInputBox = (props) => {
       null;
     } else {
       onSendPress();
+      console.log()
     }
   };
 

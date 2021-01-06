@@ -214,3 +214,23 @@
     }
   }
 }
+
+
+"statusRoomID": "1aa28315-ba2e-4ca1-bad4-5a553263e09f",
+  "statusRoom": {
+    "statusRoomUsers": {
+      "items": [
+        {
+          "id": "cee22344-6511-4ef6-a7ed-5f804466c3da",
+          "user": {
+            "name": "jordan",
+            "id": "95a63a1a-530e-4acc-aeb3-996258a74fab"
+          }
+        },
+        {
+          "id": "08f9e511-216c-4981-a44c-42fdfe4ac14e",
+          "user": {
+            "name": "Mike",
+            "id": "ec58fdcc-be5f-41ea-a974-f210bafdcd2c"
+          }
+        }

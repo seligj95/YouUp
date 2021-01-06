@@ -5,8 +5,7 @@ import { StatusItem } from '../../types';
 import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-//import { getStatusRoomStatuses } from '../../screens/queries';
-import { getStatusRoom } from '../../graphql/queries'
+import { getStatusRoomLastStatuses } from '../../screens/queries'
 
 export type StatusListItemProps = {
   statusRoom: StatusItem;
@@ -16,46 +15,52 @@ const StatusListItem = (props: StatusListItemProps) => {
   const { statusRoom } = props;
   const [otherUser, setOtherUser] = useState(null);
   const [statusRoomData, setStatusRoomData] = useState([]);
-  // const [userStatus, setUserStatus] = useState('');
-  // const [contactStatus, setContactStatus] = useState('');
-  // const [contactStatusLastUpdate, setContactStatusLastUpdate] = useState('');
+  const [myLastStatus, setMyLastStatus] = useState('');
+  const [myLastStatusTime, setMyLastStatusTime] = useState('');
+  const [otherUserLastStatus, setOtherUserLastStatus] = useState('');
+  const [otherUserLastStatusTime, setOtherUserLastStatusTime] = useState('');
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchStatusRoomData = async () => {
       try {
+        const userInfo = await Auth.currentAuthenticatedUser();
+
         const statusData = await API.graphql(
           graphqlOperation(
-            getStatusRoom, {
+            getStatusRoomLastStatuses, {
               id: statusRoom.id
             }
           )
         )
-        setStatusRoomData(statusData.data.getStatusRoom.statuses.items)
-        // if (statusData.data.getStatusRoom.statuses.items[0].userID === otherUser.id) {
-        //   setUserStatus(statusData.data.getStatusRoom.statuses.items[1].content);
-        //   setContactStatus(statusData.data.getStatusRoom.statuses.items[0].content);
-        //   setContactStatusLastUpdate(statusData.data.getStatusRoom.statuses.items[0].createdAt)
-        // } else {
-        //   setUserStatus(statusData.data.getStatusRoom.statuses.items[0].content);
-        //   setContactStatus(statusData.data.getStatusRoom.statuses.items[1].content);
-        //   setContactStatusLastUpdate(statusData.data.getStatusRoom.statuses.items[1].createdAt)
-        // }
+        if (statusData.data.getStatusRoom.statusRoomUsers.items === null) {
+          setMyLastStatus('');
+          setMyLastStatusTime('');
+          setOtherUserLastStatus('');
+          setOtherUserLastStatusTime('');
+        } else if (statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === userInfo.attributes.sub) {
+          setMyLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
+          setMyLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.createdAt);
+          setOtherUserLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.content);
+          setOtherUserLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.createdAt);
+        } else {
+          setMyLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.content);
+          setMyLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.createdAt);
+          setOtherUserLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
+          setOtherUserLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.createdAt);
+        };
+        setStatusRoomData(statusData.data.getStatusRoom.statusRoomUsers.items);
       } catch (e) {
         console.log(e)
       }
     }
     fetchStatusRoomData();
-    // console.log(statusRoomData)
   }, [])
 
-  console.log(statusRoomData.length);
-  // if (statusRoomData.length === 0) {
-  //   return null;
-  // } else {
-  //   console.log(statusRoomData);
-  // };
+  if (!statusRoomData) {
+    return null
+  }
 
   useEffect(() => {
     const getOtherUser = async () => {
@@ -89,13 +94,13 @@ const StatusListItem = (props: StatusListItemProps) => {
         </View>
         <View style={style.contactStatusContainer}>
           <Text style={style.contactStatus}>
-            {statusRoom.lastContactStatus
-              ? `${statusRoom.lastContactStatus.content}`
+            {statusRoomData
+              ? `${otherUserLastStatus}`
               : ""}
           </Text>
           <Text style={style.lastUpdate}>
             {'Last Updated:\n'}
-            {statusRoom.lastContactStatus && moment(statusRoom.lastContactStatus.updatedAt).format('MM/DD/YY, h:mm a')}
+            {statusRoomData && moment(otherUserLastStatusTime).format('MM/DD/YY, h:mm a')}
           </Text>
         </View>
       </View>
@@ -103,8 +108,8 @@ const StatusListItem = (props: StatusListItemProps) => {
         <View style={style.userStatusContainer}>
           <Text style={style.userStatus}>
             {'Status: '}
-            {statusRoom.lastUserStatus
-              ? `${statusRoom.lastUserStatus.content}`
+            {statusRoomData
+              ? `${myLastStatus}`
               : ""}
           </Text>
         </View>

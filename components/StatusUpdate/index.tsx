@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text } from 'react-native';
 import { Status } from '../../types';
 import style from './style';
 

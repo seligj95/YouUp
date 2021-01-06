@@ -16,16 +16,14 @@ type StatusRoomUser
   statusRoomID: ID!
   user: User @connection(fields: ["userID"])
   statusRoom: StatusRoom @connection(fields: ["statusRoomID"])
+  lastStatusID: ID!
+  lastStatus: Status @connection(fields: ["lastStatusID"])
 }
 
 type StatusRoom @model {
   id: ID!
   statusRoomUsers: [StatusRoomUser] @connection(keyName: "byStatusRoom", fields: ["id"])
   statuses: [Status] @connection(keyName: "byStatusRoom", fields: ["id"])
-  lastUserStatusID: ID!
-  lastUserStatus: Status @connection(fields: ["lastUserStatusID"])
-  lastContactStatusID: ID!
-  lastContactStatus: Status @connection(fields: ["lastContactStatusID"])
 }
 
 type Status 

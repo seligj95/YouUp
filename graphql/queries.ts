@@ -14,6 +14,7 @@ export const getUser = /* GraphQL */ `
           id
           userID
           statusRoomID
+          lastStatusID
           createdAt
           updatedAt
         }
@@ -71,25 +72,29 @@ export const getStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastUserStatusID
-        lastUserStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
-        lastContactStatusID
-        lastContactStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
         createdAt
+        updatedAt
+      }
+      lastStatusID
+      lastStatus {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          createdAt
+          updatedAt
+        }
         updatedAt
       }
       createdAt
@@ -118,9 +123,16 @@ export const listStatusRoomUsers = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastUserStatusID
-          lastContactStatusID
           createdAt
+          updatedAt
+        }
+        lastStatusID
+        lastStatus {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
           updatedAt
         }
         createdAt
@@ -139,6 +151,7 @@ export const getStatusRoom = /* GraphQL */ `
           id
           userID
           statusRoomID
+          lastStatusID
           createdAt
           updatedAt
         }
@@ -154,54 +167,6 @@ export const getStatusRoom = /* GraphQL */ `
           updatedAt
         }
         nextToken
-      }
-      lastUserStatusID
-      lastUserStatus {
-        id
-        createdAt
-        content
-        userID
-        statusRoomID
-        user {
-          id
-          name
-          imageUri
-          shoutOut
-          createdAt
-          updatedAt
-        }
-        statusRoom {
-          id
-          lastUserStatusID
-          lastContactStatusID
-          createdAt
-          updatedAt
-        }
-        updatedAt
-      }
-      lastContactStatusID
-      lastContactStatus {
-        id
-        createdAt
-        content
-        userID
-        statusRoomID
-        user {
-          id
-          name
-          imageUri
-          shoutOut
-          createdAt
-          updatedAt
-        }
-        statusRoom {
-          id
-          lastUserStatusID
-          lastContactStatusID
-          createdAt
-          updatedAt
-        }
-        updatedAt
       }
       createdAt
       updatedAt
@@ -222,24 +187,6 @@ export const listStatusRooms = /* GraphQL */ `
         }
         statuses {
           nextToken
-        }
-        lastUserStatusID
-        lastUserStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
-        lastContactStatusID
-        lastContactStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
         }
         createdAt
         updatedAt
@@ -275,24 +222,6 @@ export const getStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
-        lastUserStatusID
-        lastUserStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
-        lastContactStatusID
-        lastContactStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -323,8 +252,6 @@ export const listStatuss = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastUserStatusID
-          lastContactStatusID
           createdAt
           updatedAt
         }
@@ -367,8 +294,6 @@ export const statusesByStatusRoom = /* GraphQL */ `
         }
         statusRoom {
           id
-          lastUserStatusID
-          lastContactStatusID
           createdAt
           updatedAt
         }

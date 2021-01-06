@@ -4,7 +4,7 @@ import { User } from '../../types';
 import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { createStatusRoom, createStatusRoomUser } from '../../graphql/mutations';
+import { createStatusRoom, createStatusRoomUser, createStatus} from '../../graphql/mutations';
 import { myStatusRooms } from '../../screens/queries'
 
 export type ContactListItemProps = {
@@ -13,7 +13,7 @@ export type ContactListItemProps = {
 
 const ContactListItem = (props: ContactListItemProps) => {
   const { user } = props;
-  const [userStatusRooms, setUserStatusRooms] = useState([]);
+  //const [userStatusRooms, setUserStatusRooms] = useState([]);
 
   const navigation = useNavigation();
 
@@ -34,21 +34,46 @@ const ContactListItem = (props: ContactListItemProps) => {
       // create new status room
       const newStatusRoomData = await API.graphql(
         graphqlOperation(
-          createStatusRoom, { 
+          createStatusRoom, {
             input: {
-              lastUserStatusID: "xxa63a1a-530e-4acc-aeb3-996258a74fab",
-              lastContactStatusID: "zza63a1a-530e-4acc-aeb3-996258a74fab",
+              id: (Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 36))
             }
           }
         )
       )
-
       if (!newStatusRoomData.data) {
         console.log("Failed to create a status room");
         return;
       }
 
       const newStatusRoom = newStatusRoomData.data.createStatusRoom;
+      // create new status and assign to last status for each user
+      const initialLastStatusUser = await API.graphql(
+        graphqlOperation(
+          createStatus, {
+            input: {
+              content: 'Status Not Set',
+              statusRoomID: newStatusRoom.id,
+              userID: userInfo.attributes.sub
+            }
+          }
+        )
+      )
+
+      const initialLastStatusContact = await API.graphql(
+        graphqlOperation(
+          createStatus, {
+            input: {
+              content: 'Status Not Set',
+              statusRoomID: newStatusRoom.id,
+              userID: user.id
+            }
+          }
+        )
+      )
+
+      const initialUserLastStatusID = initialLastStatusUser.data.createStatus
+      const initialContactLastStatusID = initialLastStatusContact.data.createStatus
 
       // add contact to status room
       const newUserStatusRoom = await API.graphql(
@@ -56,23 +81,27 @@ const ContactListItem = (props: ContactListItemProps) => {
           createStatusRoomUser, {
             input: {
               userID: user.id,
-              statusRoomID: newStatusRoom.id
+              statusRoomID: newStatusRoom.id,
+              lastStatusID: initialContactLastStatusID.id
             }
           }
         )
       )
+
       // add authenticated user to status room
       await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
             input: {
               userID: userInfo.attributes.sub,
-              statusRoomID: newStatusRoom.id
+              statusRoomID: newStatusRoom.id,
+              lastStatusID: initialUserLastStatusID.id
             }
           }
         )
       )
 
+      // set name to name of contact
       navigation.navigate('StatusUpdate', { 
         id: newStatusRoom.id, 
         name: "HardCoded Name",

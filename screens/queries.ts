@@ -24,24 +24,6 @@ export const getUser = /* GraphQL */ `
                 }
               }
             }
-            lastUserStatus {
-              id
-              content
-              updatedAt
-              user {
-                id
-                name
-              }
-            }
-            lastContactStatus {
-              id
-              content
-              updatedAt
-              user {
-                id
-                name
-              }
-            }
           }
         }
         nextToken
@@ -82,6 +64,23 @@ export const myStatusRooms = /* GraphQL */ `
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getStatusRoomLastStatuses = /* GraphQL */ `
+  query GetStatusRoomLastStatuses($id: ID!) {
+    getStatusRoom(id: $id) {
+      statusRoomUsers {
+        items {
+          lastStatus {
+            id
+            content
+            userID
+            createdAt
           }
         }
       }
