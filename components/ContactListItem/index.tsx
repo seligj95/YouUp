@@ -5,7 +5,6 @@ import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { createStatusRoom, createStatusRoomUser, createStatus} from '../../graphql/mutations';
-import { myStatusRooms } from '../../screens/queries'
 
 export type ContactListItemProps = {
   user: User;
@@ -52,7 +51,7 @@ const ContactListItem = (props: ContactListItemProps) => {
         graphqlOperation(
           createStatus, {
             input: {
-              content: 'Status Not Set',
+              content: 'User Status Not Set',
               statusRoomID: newStatusRoom.id,
               userID: userInfo.attributes.sub
             }
@@ -64,7 +63,7 @@ const ContactListItem = (props: ContactListItemProps) => {
         graphqlOperation(
           createStatus, {
             input: {
-              content: 'Status Not Set',
+              content: 'Contact Status Not Set',
               statusRoomID: newStatusRoom.id,
               userID: user.id
             }
@@ -76,7 +75,7 @@ const ContactListItem = (props: ContactListItemProps) => {
       const initialContactLastStatusID = initialLastStatusContact.data.createStatus
 
       // add contact to status room
-      const newUserStatusRoom = await API.graphql(
+      const contactStatusRoomUser = await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
             input: {
@@ -86,10 +85,10 @@ const ContactListItem = (props: ContactListItemProps) => {
             }
           }
         )
-      )
+      );
 
       // add authenticated user to status room
-      await API.graphql(
+      const userStatusRoomUser = await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
             input: {
@@ -99,12 +98,11 @@ const ContactListItem = (props: ContactListItemProps) => {
             }
           }
         )
-      )
+      );
 
-      // set name to name of contact
       navigation.navigate('StatusUpdate', { 
         id: newStatusRoom.id, 
-        name: "HardCoded Name",
+        name: user.name
       })
 
     } catch (e){

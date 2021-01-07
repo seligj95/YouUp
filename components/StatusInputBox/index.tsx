@@ -3,14 +3,14 @@ import { TextInput, View, TouchableOpacity, KeyboardAvoidingView, Platform } fro
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { createStatus, updateStatusRoomUser, deleteStatus } from '../../graphql/mutations';
-import { getStatusRoom } from '../../graphql/queries';
+import { createStatus, updateStatusRoomUser, deleteStatus, updateUser } from '../../graphql/mutations';
+import { getStatusRoomData } from '../../screens/queries';
 
 const StatusInputBox = (props) => {
   const { statusRoomID } = props;
   const [status, setStatus] = useState('');
   const [myUserId, setMyUserId] = useState(null);
-  const [myStatusRoomID, setMyStatusRoomID] = useState(null);
+  const [myStatusRoomUserID, setMyStatusRoomUserID] = useState('');
   const [myLastStatusID, setMyLastStatusID] = useState('');
 
   useEffect(() => {
@@ -26,17 +26,20 @@ const StatusInputBox = (props) => {
       try {
         const statusRoomData = await API.graphql(
           graphqlOperation(
-            getStatusRoom, {
-              id: statusRoomID,
+            getStatusRoomData, {
+              id: statusRoomID
             }
           )
         )
-        if (statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].userId === myUserId) {
-          setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].id);
-          setMyLastStatusID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[0].lastStatusID);
+        
+        const dataUserId = statusRoomData.data.getStatusRoom.statusRoomUsers.items;
+        //THIS LOGIC ISN'T WORKING, SAME ISSUE AS USER STATUS UPDATE SCREEN
+        if (dataUserId[0].userId !== myUserId) {
+          setMyStatusRoomUserID(dataUserId[0].id);
+          setMyLastStatusID(dataUserId[0].lastStatus.id);
         } else {
-          setMyStatusRoomID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[1].id);
-          setMyLastStatusID(statusRoomData.data.getStatusRoom.statusRoomUsers.items[1].lastStatusID);
+          setMyStatusRoomUserID(dataUserId[1].id);
+          setMyLastStatusID(dataUserId[1].lastStatus.id);
         }
       } catch (e) {
         console.log(e)
@@ -45,14 +48,13 @@ const StatusInputBox = (props) => {
     fetchStatusRoomUserID();
   }, []);
 
-
   const updateLastUserStatus = async (statusId: string) => {
     try {
-      await API.graphql(
+     await API.graphql(
         graphqlOperation(
           updateStatusRoomUser, {
             input: {
-              id: myStatusRoomID,
+              id: myStatusRoomUserID,
               lastStatusID: statusId,
             }
           }
@@ -74,7 +76,7 @@ const StatusInputBox = (props) => {
           }
         )
       );
-      console.log(myLastStatusID)
+      console.log('deleting', myLastStatusID)
     } catch (e) {
       console.log(e)
     }
@@ -93,9 +95,8 @@ const StatusInputBox = (props) => {
           }
         )
       );
-      console.log(newStatusData.data.createStatus.id)
       deleteLastStatus();
-      await updateLastUserStatus(newStatusData.data.createStatus.id)
+      await updateLastUserStatus(newStatusData.data.createStatus.id);
     } catch (e) {
       console.log(e);
     }

@@ -87,3 +87,22 @@ export const getStatusRoomLastStatuses = /* GraphQL */ `
     }
   }
 `;
+
+export const getStatusRoomData = /* GraphQL */ `
+  query GetStatusRoom($id: ID!) {
+    getStatusRoom(id: $id) {
+      id
+      statusRoomUsers {
+        items {
+          id
+          userID
+          lastStatus {
+            id
+            content
+            updatedAt
+          }
+        }
+      }
+    }
+  }
+`;

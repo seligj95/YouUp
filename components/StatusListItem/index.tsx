@@ -23,7 +23,7 @@ const StatusListItem = (props: StatusListItemProps) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchStatusRoomData = async () => {
+    const fetchStatuses = async () => {
       try {
         const userInfo = await Auth.currentAuthenticatedUser();
 
@@ -34,12 +34,7 @@ const StatusListItem = (props: StatusListItemProps) => {
             }
           )
         )
-        if (statusData.data.getStatusRoom.statusRoomUsers.items === null) {
-          setMyLastStatus('');
-          setMyLastStatusTime('');
-          setOtherUserLastStatus('');
-          setOtherUserLastStatusTime('');
-        } else if (statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === userInfo.attributes.sub) {
+        if (statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === userInfo.attributes.sub) {
           setMyLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
           setMyLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.createdAt);
           setOtherUserLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.content);
@@ -55,11 +50,11 @@ const StatusListItem = (props: StatusListItemProps) => {
         console.log(e)
       }
     }
-    fetchStatusRoomData();
+    fetchStatuses();
   }, [])
 
   if (!statusRoomData) {
-    return null
+    return null;
   }
 
   useEffect(() => {
