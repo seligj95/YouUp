@@ -32,14 +32,17 @@ const StatusInputBox = (props) => {
           )
         )
         
-        const dataUserId = statusRoomData.data.getStatusRoom.statusRoomUsers.items;
+        var dataUserId = statusRoomData.data.getStatusRoom.statusRoomUsers.items;
+        console.log(dataUserId)
         //THIS LOGIC ISN'T WORKING, SAME ISSUE AS USER STATUS UPDATE SCREEN
-        if (dataUserId[0].userId !== myUserId) {
+        if (dataUserId[0].userID === myUserId) {
           setMyStatusRoomUserID(dataUserId[0].id);
           setMyLastStatusID(dataUserId[0].lastStatus.id);
+          console.log('if is true')
         } else {
           setMyStatusRoomUserID(dataUserId[1].id);
           setMyLastStatusID(dataUserId[1].lastStatus.id);
+          console.log('else is true')
         }
       } catch (e) {
         console.log(e)

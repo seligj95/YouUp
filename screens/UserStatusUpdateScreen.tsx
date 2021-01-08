@@ -12,30 +12,29 @@ import { onUpdateStatusRoomUser } from '../graphql/subscriptions';
 import DeleteStatusRoomButton from '../components/DeleteStatusRoomButton';
 
 const UserStatusUpdateScreen = () => {
+  // this gives the status room ID
   const route = useRoute();
 
-  // const [statuses, setStatuses] = useState([]);
-  const [myId, setMyId] = useState(null);
+  // setting const
+  const [myId, setMyId] = useState('');
   const [myLastStatus, setMyLastStatus] = useState('');
   const [contactLastStatus, setContactLastStatus] = useState('');
-  
-  // useEffect(() => {
-  //   const fetchStatuses = async () => {
-  //     const statusesData = await API.graphql(
-  //       graphqlOperation(
-  //         statusesByStatusRoom, {
-  //           statusRoomID: route.params.id,
-  //           sortDirection: 'DESC',
-  //         }
-  //       )
-  //     )
-  //     setStatuses(statusesData.data.statusesByStatusRoom.items);
-  //   }
-  //   fetchStatuses();
-  // }, [])
+
+  // query to get authenicated user's ID
+  useEffect(() => {
+    const getMyId = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      setMyId(userInfo.attributes.sub);
+    }
+    getMyId();
+  }, [])
+
+  // query to get authenticated user 
 
   useEffect(() => {
     const fetchStatuses = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+
       const statusesData = await API.graphql(
         graphqlOperation(
           getStatusRoomLastStatuses, {
@@ -44,23 +43,19 @@ const UserStatusUpdateScreen = () => {
         )
       )
       // THIS LOGIC ISN'T WORKING, SAME ISSUE AS STATUSINPUTBOX
-      if (statusesData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === myId) {
+
+      if (statusesData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === userInfo.attributes.sub) {
         setMyLastStatus(statusesData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
         setContactLastStatus(statusesData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.content);
       } else {
         setMyLastStatus(statusesData.data.getStatusRoom.statusRoomUsers.items[1].lastStatus.content);
         setContactLastStatus(statusesData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
       }
+      console.log('myid', userInfo.attributes.sub)
+      console.log('myqueuryid', statusesData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID)
     }
-    fetchStatuses();
-  }, [])
 
-  useEffect(() => {
-    const getMyId = async () => {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      setMyId(userInfo.attributes.sub);
-    }
-    getMyId();
+    fetchStatuses();
   }, [])
 
   useEffect(() => {

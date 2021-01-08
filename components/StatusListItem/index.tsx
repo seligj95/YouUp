@@ -34,6 +34,7 @@ const StatusListItem = (props: StatusListItemProps) => {
             }
           )
         )
+        console.log(statusData.data.getStatusRoom.statusRoomUsers.items)
         if (statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.userID === userInfo.attributes.sub) {
           setMyLastStatus(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.content);
           setMyLastStatusTime(statusData.data.getStatusRoom.statusRoomUsers.items[0].lastStatus.createdAt);
