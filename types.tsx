@@ -49,6 +49,4 @@ export type StatusItem = {
   users: User[];
   contactTags: Tag[];
   userTags: Tag[];
-  contactStatus: Status;
-  userStatus: Status;
 };
