@@ -51,7 +51,7 @@ const ContactListItem = (props: ContactListItemProps) => {
         graphqlOperation(
           createStatus, {
             input: {
-              content: 'User Status Not Set',
+              content: 'Status Not Set',
               statusRoomID: newStatusRoom.id,
               userID: userInfo.attributes.sub
             }
@@ -63,7 +63,7 @@ const ContactListItem = (props: ContactListItemProps) => {
         graphqlOperation(
           createStatus, {
             input: {
-              content: 'Contact Status Not Set',
+              content: 'Status Not Set',
               statusRoomID: newStatusRoom.id,
               userID: user.id
             }
