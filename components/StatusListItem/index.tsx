@@ -6,7 +6,7 @@ import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getStatusRoomData } from '../../screens/queries';
-import { getStatusRoomUser } from '../../graphql/queries';
+import { getStatusRoom } from '../../graphql/queries';
 
 export type StatusListItemProps = {
   statusRoom: StatusItem;
@@ -17,75 +17,47 @@ const StatusListItem = (props: StatusListItemProps) => {
   const { statusRoom } = props;
   console.log(statusRoom)
   const [otherUser, setOtherUser] = useState(null);
-  const [myStatusRoomUserId, setMyStatusRoomUserId] = useState('');
-  const [contactStatusRoomUserId, setContactStatusRoomUserId] = useState('');
-  const [myLastStatus, setMyLastStatus] = useState('');
-  const [myLastStatusTime, setMyLastStatusTime] = useState('');
-  const [contactLastStatus, setContactLastStatus] = useState('');
-  const [contactLastStatusTime, setContactLastStatusTime] = useState('');
+  const [userLastStatus, setUserLastStatus] = useState('');
+  const [userLastStatusTime, setUserLastStatusTime] = useState('');
+  const [otherUserLastStatus, setOtherUserLastStatus] = useState('');
+  const [otherUserLastStatusTime, setOtherUserLastStatusTime] = useState('');
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    // query to get authenicated user's status room user ID
     const getLastStatuses = async () => {
+      // query to get authenicated user's id
       const userInfo = await Auth.currentAuthenticatedUser();
       const userId = userInfo.attributes.sub;
 
+      // get statuses from status room
       const statusRoomData = await API.graphql(
         graphqlOperation(
-          getStatusRoomData, {
+          getStatusRoom, {
             id: statusRoom.id
           }
         )
       )
-      // get authenticated user's status room user id
-      const statusRoomUserIds = statusRoomData.data.getStatusRoom.statusRoomUsers.items;
-      if (statusRoomUserIds[0].userID === userId) {
-        setMyStatusRoomUserId(statusRoomUserIds[0].id);
-        setContactStatusRoomUserId(statusRoomUserIds[1].id);
-        // get Last statuses
-        const myLastStatusData = await API.graphql(
-          graphqlOperation(
-            getStatusRoomUser, {
-              id: statusRoomUserIds[0].id
-            }
-          )
-        )
-        const contactLastStatusData = await API.graphql(
-          graphqlOperation(
-            getStatusRoomUser, {
-              id: statusRoomUserIds[1].id
-            }
-          )
-        )
-        setMyLastStatus(myLastStatusData.data.getStatusRoomUser.lastStatus.content);
-        setMyLastStatusTime(myLastStatusData.data.getStatusRoomUser.lastStatus.createdAt);
-        setContactLastStatus(contactLastStatusData.data.getStatusRoomUser.lastStatus.content);
-        setContactLastStatusTime(contactLastStatusData.data.getStatusRoomUser.lastStatus.createdAt);
-      } else {
-        setMyStatusRoomUserId(statusRoomUserIds[1].id);
-        setContactStatusRoomUserId(statusRoomUserIds[0].id);
-        // get Last statuses
-        const myLastStatusData = await API.graphql(
-          graphqlOperation(
-            getStatusRoomUser, {
-              id: statusRoomUserIds[1].id
-            }
-          )
-        )
-        const contactLastStatusData = await API.graphql(
-          graphqlOperation(
-            getStatusRoomUser, {
-              id: statusRoomUserIds[0].id
-            }
-          )
-        )
-        setMyLastStatus(myLastStatusData.data.getStatusRoomUser.lastStatus.content);
-        setMyLastStatusTime(myLastStatusData.data.getStatusRoomUser.lastStatus.createdAt);
-        setContactLastStatus(contactLastStatusData.data.getStatusRoomUser.lastStatus.content);
-        setContactLastStatusTime(contactLastStatusData.data.getStatusRoomUser.lastStatus.createdAt);
+
+      // create status arrarys for users
+      // sort array so that latest status is in index 0
+      // set last status to lastest status
+      const statusData = statusRoomData.data.getStatusRoom.statuses.items;
+      let userStatuses = statusData.filter(item => item.userID === userId);
+      let otherUserStatuses = statusData.filter(item => item.userID !== userId);
+      
+      function sortStatuses(t1, t2) {
+        var t1_date = new Date(t1.createdAt)
+        var t2_date = new Date(t2.createdAt)
+        return t2_date - t1_date;
       }
+
+      let userStatusesSorted = userStatuses.sort(sortStatuses);
+      let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
+      setUserLastStatus(userStatusesSorted[0].content);
+      setUserLastStatusTime(userStatusesSorted[0].createdAt);
+      setOtherUserLastStatus(otherUserStatusesSorted[0].content);
+      setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
     };
     getLastStatuses();
   }, [])
@@ -124,11 +96,11 @@ const StatusListItem = (props: StatusListItemProps) => {
         </View>
         <View style={style.contactStatusContainer}>
           <Text style={style.contactStatus}>
-            {contactLastStatus}
+            {otherUserLastStatus}
           </Text>
           <Text style={style.lastUpdate}>
             {'Last Updated:\n'}
-            {moment(contactLastStatusTime).format('MM/DD/YY, h:mm a')}
+            {moment(otherUserLastStatusTime).format('MM/DD/YY, h:mm a')}
           </Text>
         </View>
       </View>
@@ -136,7 +108,7 @@ const StatusListItem = (props: StatusListItemProps) => {
         <View style={style.userStatusContainer}>
           <Text style={style.userStatus}>
             {'Status: '}
-            {myLastStatus}
+            {userLastStatus}
           </Text>
         </View>
       </TouchableWithoutFeedback>

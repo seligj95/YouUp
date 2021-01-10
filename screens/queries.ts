@@ -106,3 +106,25 @@ export const getStatusRoomData = /* GraphQL */ `
     }
   }
 `;
+
+export const statusRoomLastStatuses = /* GraphQL */ `
+  query statusRoomLastStatuses($statusRoomID: ID!) {
+    statusesByStatusRoom(statusRoomID: $id) {
+      items {
+      user {
+        id
+        name
+        imageUri
+        statusRoomUser {
+          items {
+            lastStatus {
+              id
+              createdAt
+              content
+            }
+          }
+        }
+      }
+    }
+  }
+`;
