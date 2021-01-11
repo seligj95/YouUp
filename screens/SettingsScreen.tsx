@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, StyleSheet } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { Auth } from 'aws-amplify';
 

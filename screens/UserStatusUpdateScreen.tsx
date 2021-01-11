@@ -38,7 +38,6 @@ const UserStatusUpdateScreen = () => {
       setStatuses(statusRoomData.data.getStatusRoom.statuses);
       // create status arrarys for users
       // sort array so that latest status is in index 0
-      // set last status to lastest status
       const statusData = statusRoomData.data.getStatusRoom.statuses.items;
       let userStatuses = statusData.filter(item => item.userID === userId);
       let otherUserStatuses = statusData.filter(item => item.userID !== userId);
@@ -48,16 +47,6 @@ const UserStatusUpdateScreen = () => {
         var t2_date = new Date(t2.createdAt)
         return t2_date - t1_date;
       }
-      // let userStatusesSorted = userStatuses.sort(function (a, b){
-      //   var c = new Date(a.createdAt);
-      //   var d = new Date(b.createdAt);
-      //   return d-c;
-      // });
-      // let otherUserStatusesSorted = otherUserStatuses.sort(function (a, b){
-      //   var c = new Date(a.createdAt);
-      //   var d = new Date(b.createdAt);
-      //   return d-c;
-      // });
       
       let userStatusesSorted = userStatuses.sort(sortStatuses);
       let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
@@ -65,8 +54,6 @@ const UserStatusUpdateScreen = () => {
       setUserLastStatusTime(userStatusesSorted[0].createdAt);
       setOtherUserLastStatus(otherUserStatusesSorted[0].content);
       setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
-      console.log(userStatuses);
-      console.log(otherUserStatuses);
     };
     getLastStatuses();
   }, [])

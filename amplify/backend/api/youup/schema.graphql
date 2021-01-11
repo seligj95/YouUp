@@ -16,8 +16,6 @@ type StatusRoomUser
   statusRoomID: ID!
   user: User @connection(fields: ["userID"])
   statusRoom: StatusRoom @connection(fields: ["statusRoomID"])
-  lastStatusID: ID!
-  lastStatus: Status @connection(fields: ["lastStatusID"])
 }
 
 type StatusRoom @model {

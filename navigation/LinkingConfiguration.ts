@@ -11,6 +11,11 @@ export default {
               StatusesScreen: 'statuses',
             },
           },
+          ShoutOuts: {
+            screens: {
+              ShoutOutScreen: 'shoutOuts',
+            },
+          },
           Settings: {
             screens: {
               SettingsScreen: 'settings',

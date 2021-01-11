@@ -3,27 +3,28 @@ import { TextInput, View, TouchableOpacity, KeyboardAvoidingView, Platform } fro
 import style from './style';
 import { FontAwesome } from '@expo/vector-icons';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { createStatus, updateStatusRoomUser, deleteStatus } from '../../graphql/mutations';
+import { createStatus, deleteStatus } from '../../graphql/mutations';
 import { getStatusRoom } from '../../graphql/queries';
 
 const StatusInputBox = (props) => {
   const { statusRoomID } = props;
   const [status, setStatus] = useState('');
   const [myId, setMyId] = useState(null);
-  const [myStatusRoomUserId, setMyStatusRoomUserId] = useState('');
-  const [userLastStatusId, setUserLastStatusId] = useState('');
+  const [statusToDelete, setStatusToDelete] = useState('');
+
+
 
   useEffect(() => {
     // query to get authenicated user's ID
-    const getIds = async () => {
+    const getId = async () => {
       const userInfo = await Auth.currentAuthenticatedUser();
       setMyId(userInfo.attributes.sub);
     };
-    getIds();
+    getId();
   }, []);
 
   // useEffect(() => {
-  //   const getLastStatusID = async () => {
+  //   const getStatusToDelete = async () => {
   //     // query to get authenicated user's id
   //     const userInfo = await Auth.currentAuthenticatedUser();
   //     const userId = userInfo.attributes.sub;
@@ -36,39 +37,23 @@ const StatusInputBox = (props) => {
   //         }
   //       )
   //     )
-
-  //     // create status arrarys for users
-  //     // sort array so that latest status is in index 0
-  //     // set last status to lastest status
+  //     // create status arrarys for user
+  //     // sort array so that new status is in index 0
+  //     // index 1 should be the status that is to be deleted
   //     const statusData = statusRoomData.data.getStatusRoom.statuses.items;
-  //     let userStatuses = statusData
-  //       .filter(item => item.userID === userId)
-  //       .sort((t1, t2) => t2.createdAt - t1. createdAt)
-  //       //.map (item => console.log(item.content + ':' + item.createdAt + ':' + item.userID));
-  //     setUserLastStatusId(userStatuses[0].content);
+  //     let userStatuses = statusData.filter(item => item.userID === userId);
+      
+  //     function sortStatuses(t1, t2) {
+  //       var t1_date = new Date(t1.createdAt)
+  //       var t2_date = new Date(t2.createdAt)
+  //       return t2_date - t1_date;
+  //     }
+      
+  //     let userStatusesSorted = userStatuses.sort(sortStatuses);
+  //     setStatusToDelete(userStatusesSorted[1].content);
   //   };
-  //   getLastStatusID();
-  // }, []);
-
-  // update last status for authenticated user with content of status input box
-  // const updateLastUserStatus = async (statusId: string) => {
-  //   try {
-  //    await API.graphql(
-  //       graphqlOperation(
-  //         updateStatusRoomUser, {
-  //           input: {
-  //             id: myStatusRoomUserId,
-  //             lastStatusID: statusId,
-  //           }
-  //         }
-  //       )
-  //     );
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   console.log('stat room user id', myStatusRoomUserId)
-  //   console.log('statusid', statusId)
-  //   }
+  //   getStatusToDelete();
+  // }, [])
 
   // delete previous last status for authenticated user
   // const deleteLastStatus = async () => {
@@ -77,7 +62,7 @@ const StatusInputBox = (props) => {
   //       graphqlOperation(
   //         deleteStatus, {
   //           input: {
-  //             id: myLastStatusId
+  //             id: statusToDelete
   //           }
   //         }
   //       )
@@ -85,7 +70,6 @@ const StatusInputBox = (props) => {
   //   } catch (e) {
   //     console.log(e)
   //   }
-  //   console.log('delete', myLastStatusId)
   // }
 
   // on send press, create a status for user
@@ -103,10 +87,7 @@ const StatusInputBox = (props) => {
         )
       );
       // delete previous last status
-      //deleteLastStatus();
-      // update user with new last status
-      // await updateLastUserStatus(newStatusData.data.createStatus.id);
-      // console.log('outside myid', myId)
+      // await deleteLastStatus();
     } catch (e) {
       console.log(e);
     }

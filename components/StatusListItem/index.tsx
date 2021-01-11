@@ -1,11 +1,10 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
-import { StatusItem, User } from '../../types';
+import { StatusItem } from '../../types';
 import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { getStatusRoomData } from '../../screens/queries';
 import { getStatusRoom } from '../../graphql/queries';
 
 export type StatusListItemProps = {
@@ -15,7 +14,6 @@ export type StatusListItemProps = {
 const StatusListItem = (props: StatusListItemProps) => {
   // setting const
   const { statusRoom } = props;
-  console.log(statusRoom)
   const [otherUser, setOtherUser] = useState(null);
   const [userLastStatus, setUserLastStatus] = useState('');
   const [userLastStatusTime, setUserLastStatusTime] = useState('');
@@ -41,7 +39,6 @@ const StatusListItem = (props: StatusListItemProps) => {
 
       // create status arrarys for users
       // sort array so that latest status is in index 0
-      // set last status to lastest status
       const statusData = statusRoomData.data.getStatusRoom.statuses.items;
       let userStatuses = statusData.filter(item => item.userID === userId);
       let otherUserStatuses = statusData.filter(item => item.userID !== userId);

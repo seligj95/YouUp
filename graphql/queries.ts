@@ -14,7 +14,6 @@ export const getUser = /* GraphQL */ `
           id
           userID
           statusRoomID
-          lastStatusID
           createdAt
           updatedAt
         }
@@ -75,28 +74,6 @@ export const getStatusRoomUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      lastStatusID
-      lastStatus {
-        id
-        createdAt
-        content
-        userID
-        statusRoomID
-        user {
-          id
-          name
-          imageUri
-          shoutOut
-          createdAt
-          updatedAt
-        }
-        statusRoom {
-          id
-          createdAt
-          updatedAt
-        }
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -126,15 +103,6 @@ export const listStatusRoomUsers = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        lastStatusID
-        lastStatus {
-          id
-          createdAt
-          content
-          userID
-          statusRoomID
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -151,7 +119,6 @@ export const getStatusRoom = /* GraphQL */ `
           id
           userID
           statusRoomID
-          lastStatusID
           createdAt
           updatedAt
         }

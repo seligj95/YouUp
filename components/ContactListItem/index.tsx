@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { User } from '../../types';
 import style from './style';
@@ -46,7 +46,7 @@ const ContactListItem = (props: ContactListItemProps) => {
       }
 
       const newStatusRoom = newStatusRoomData.data.createStatusRoom;
-      // create new status and assign to last status for each user
+      // create new status for each user
       const initialLastStatusUser = await API.graphql(
         graphqlOperation(
           createStatus, {
@@ -58,7 +58,6 @@ const ContactListItem = (props: ContactListItemProps) => {
           }
         )
       )
-
       const initialLastStatusContact = await API.graphql(
         graphqlOperation(
           createStatus, {
@@ -71,30 +70,24 @@ const ContactListItem = (props: ContactListItemProps) => {
         )
       )
 
-      const initialUserLastStatusID = initialLastStatusUser.data.createStatus
-      const initialContactLastStatusID = initialLastStatusContact.data.createStatus
-
       // add contact to status room
       const contactStatusRoomUser = await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
             input: {
               userID: user.id,
-              statusRoomID: newStatusRoom.id,
-              lastStatusID: initialContactLastStatusID.id
+              statusRoomID: newStatusRoom.id
             }
           }
         )
       );
-
       // add authenticated user to status room
       const userStatusRoomUser = await API.graphql(
         graphqlOperation(
           createStatusRoomUser, {
             input: {
               userID: userInfo.attributes.sub,
-              statusRoomID: newStatusRoom.id,
-              lastStatusID: initialUserLastStatusID.id
+              statusRoomID: newStatusRoom.id
             }
           }
         )
