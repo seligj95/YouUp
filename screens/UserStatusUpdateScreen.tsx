@@ -21,67 +21,70 @@ const UserStatusUpdateScreen = () => {
   const [otherUserLastStatus, setOtherUserLastStatus] = useState('');
   const [otherUserLastStatusTime, setOtherUserLastStatusTime] = useState('');
 
-  useEffect(() => {
-    const getLastStatuses = async () => {
-      // query to get authenicated user's id
-      const userInfo = await Auth.currentAuthenticatedUser();
-      const userId = userInfo.attributes.sub;
+  const getLastStatuses = async () => {
+    // query to get authenicated user's id
+    const userInfo = await Auth.currentAuthenticatedUser();
+    const userId = userInfo.attributes.sub;
 
-      // get statuses from status room
-      const statusRoomData = await API.graphql(
-        graphqlOperation(
-          getStatusRoom, {
-            id: route.params.id
-          }
-        )
+    // get statuses from status room
+    const statusRoomData = await API.graphql(
+      graphqlOperation(
+        getStatusRoom, {
+          id: route.params.id
+        }
       )
-      setStatuses(statusRoomData.data.getStatusRoom.statuses);
-      // create status arrarys for users
-      // sort array so that latest status is in index 0
-      const statusData = statusRoomData.data.getStatusRoom.statuses.items;
-      let userStatuses = statusData.filter(item => item.userID === userId);
-      let otherUserStatuses = statusData.filter(item => item.userID !== userId);
-      
-      function sortStatuses(t1, t2) {
-        var t1_date = new Date(t1.createdAt)
-        var t2_date = new Date(t2.createdAt)
-        return t2_date - t1_date;
-      }
-      
-      let userStatusesSorted = userStatuses.sort(sortStatuses);
-      let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
-      setUserLastStatus(userStatusesSorted[0].content);
-      setUserLastStatusTime(userStatusesSorted[0].createdAt);
-      setOtherUserLastStatus(otherUserStatusesSorted[0].content);
-      setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
-    };
+    )
+    setStatuses(statusRoomData.data.getStatusRoom.statuses.items);
+    // create status arrarys for users
+    // sort array so that latest status is in index 0
+    const statusData = statusRoomData.data.getStatusRoom.statuses.items;
+    let userStatuses = statusData.filter(item => item.userID === userId);
+    let otherUserStatuses = statusData.filter(item => item.userID !== userId);
+    
+    function sortStatuses(t1, t2) {
+      var t1_date = new Date(t1.createdAt)
+      var t2_date = new Date(t2.createdAt)
+      return t2_date - t1_date;
+    }
+    
+    let userStatusesSorted = userStatuses.sort(sortStatuses);
+    let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
+    setUserLastStatus(userStatusesSorted[0].content);
+    setUserLastStatusTime(userStatusesSorted[0].createdAt);
+    setOtherUserLastStatus(otherUserStatusesSorted[0].content);
+    setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
+  };
+
+  useEffect(() => {
     getLastStatuses();
   }, [])
 
   // subscription for last statuses
-  // **********NEED TO UPDATE THIS TO SET THE LAST STATUS FOR THE CORRECT USER
-  // useEffect(() => {
-  //   const subsctiption = API.graphql(
-  //     graphqlOperation(onCreateStatus)
-  //   ).subscribe({
-  //     next: (data) => {
-  //       const newStatus = data.value.data.onCreateStatus;
-  //       if (newStatus.statusRoomID !== route.params.id) {
-  //         // ********update this so you are only subscribed to the specific room you are in
-  //         console.log('status is in another room')
-  //         return;
-  //       }
-  //       setStatuses([newStatus, ...statuses]);
-  //     }
-  //   });
-  //   return () => subsctiption.unsubscribe();
-  // }, [statuses])
+  useEffect(() => {
+    const subsctiption = API.graphql(
+      graphqlOperation(onCreateStatus)
+    ).subscribe({
+      next: (data) => {
+        const newStatus = data.value.data.onCreateStatus;
+        if (newStatus.statusRoomID !== route.params.id) {
+          // ********update this so you are only subscribed to the specific room you are in
+          console.log('status is in another room')
+          return;
+        }
+        setStatuses([newStatus, ...statuses]);
+        getLastStatuses();
+      }
+    });
+    return () => subsctiption.unsubscribe();
+  }, [statuses])
 
   return (
     <React.Fragment>
       <View>
-        <Text>{userLastStatus}</Text>
-        <Text>{otherUserLastStatus}</Text>
+        <Text>{'Your status is set to: '}{userLastStatus}</Text>
+        <Text>{userLastStatusTime}</Text>
+        <Text>{'Contact status is set to: '}{otherUserLastStatus}</Text>
+        <Text>{otherUserLastStatusTime}</Text>
         <StatusInputBox statusRoomID={route.params.id}/>
         <FlatList
           style={{width: '100%'}}

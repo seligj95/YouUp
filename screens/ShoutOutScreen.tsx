@@ -22,70 +22,77 @@ const renderSeparator = () => {
 };
 
 export default function ShoutOutScreen() {
-
   const [shoutOut, setShoutOut] = useState('');
   const [users, setUsers] = useState([]);
-  
-  useEffect(() => {
-    const fetchShoutOuts = async () => {
-      try {
-        const userInfo = await Auth.currentAuthenticatedUser();
+  const [myId, setMyId] = useState(null);
 
-        const userData = await API.graphql(
-          graphqlOperation(
-            getUser, {
-              id: userInfo.attributes.sub,
-            }
-          )
+  useEffect(() => {
+    // query to get authenicated user's ID
+    const getId = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      setMyId(userInfo.attributes.sub);
+    };
+    getId();
+  }, []);
+  
+  // query shoutout for authenticated user
+  const fetchShoutOuts = async () => {
+    try {
+      const userInfo = await Auth.currentAuthenticatedUser();
+
+      const userData = await API.graphql(
+        graphqlOperation(
+          getUser, {
+            id: userInfo.attributes.sub,
+          }
         )
-        setShoutOut(userData.data.getUser.shoutOut)
-      } catch (e) {
-        console.log(e);
-      }
+      )
+      setShoutOut(userData.data.getUser.shoutOut)
+    } catch (e) {
+      console.log(e);
     }
+  }
+
+  useEffect(() => {
     fetchShoutOuts();
   }, [])
 
+  // getting user data
+  const fetchUsers = async () => {
+    try {
+      const usersData = await API.graphql(
+        graphqlOperation(
+          listUsers
+        )
+      )
+      setUsers(usersData.data.listUsers.items);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // subscription on shoutout update
   useEffect(() => {
     const subsctiption = API.graphql(
       graphqlOperation(onUpdateUser)
     ).subscribe({
       next: (data) => {
-        const newShoutOut = data.value.data.onUpdateUser.shoutOut;
-        setShoutOut([newShoutOut]);
-        const fetchUsers = async () => {
-          try {
-            const usersData = await API.graphql(
-              graphqlOperation(
-                listUsers
-              )
-            )
-            setUsers(usersData.data.listUsers.items);
-          } catch (e) {
-            console.log(e);
-          }
+        const newShoutOutData = data.value.data.onUpdateUser;
+        if (newShoutOutData.id === myId) {
+          setShoutOut([newShoutOutData.shoutOut]);
         }
         fetchUsers();
       }
     });
     return () => subsctiption.unsubscribe();
-  }, [shoutOut])
+  }, [shoutOut]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const usersData = await API.graphql(
-          graphqlOperation(
-            listUsers
-          )
-        )
-        setUsers(usersData.data.listUsers.items);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    fetchUsers();
-  }, [])
+  // filtering out authenticated user form shout out list on screen
+  const filteredUsers = users.filter((item) => item.id !== myId);
 
   return (
     <React.Fragment>
@@ -99,7 +106,7 @@ export default function ShoutOutScreen() {
       </View>
       <FlatList 
         style={{width: '100%'}}
-        data={users} 
+        data={filteredUsers} 
         renderItem={({ item }) => <ShoutOutListItem user={item} />}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={renderSeparator}
