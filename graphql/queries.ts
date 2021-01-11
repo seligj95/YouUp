@@ -71,6 +71,9 @@ export const getStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -135,6 +138,17 @@ export const getStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -153,6 +167,9 @@ export const listStatusRooms = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -187,6 +204,9 @@ export const getStatus = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -228,6 +248,75 @@ export const listStatuss = /* GraphQL */ `
     }
   }
 `;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const statusesByStatusRoom = /* GraphQL */ `
   query StatusesByStatusRoom(
     $statusRoomID: ID
@@ -238,6 +327,48 @@ export const statusesByStatusRoom = /* GraphQL */ `
     $nextToken: String
   ) {
     statusesByStatusRoom(
+      statusRoomID: $statusRoomID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        content
+        userID
+        statusRoomID
+        user {
+          id
+          name
+          imageUri
+          shoutOut
+          createdAt
+          updatedAt
+        }
+        statusRoom {
+          id
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const tagsByStatusRoom = /* GraphQL */ `
+  query TagsByStatusRoom(
+    $statusRoomID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tagsByStatusRoom(
       statusRoomID: $statusRoomID
       createdAt: $createdAt
       sortDirection: $sortDirection

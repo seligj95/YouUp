@@ -6,7 +6,6 @@ import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getStatusRoom } from '../../graphql/queries';
-import { onCreateStatus } from '../../graphql/subscriptions';
 
 export type StatusListItemProps = {
   statusRoom: StatusItem;
@@ -35,7 +34,7 @@ const StatusListItem = (props: StatusListItemProps) => {
           id: statusRoom.id
         }
       )
-    )
+    );
 
     // create status arrarys for users
     // sort array so that latest status is in index 0
@@ -62,15 +61,16 @@ const StatusListItem = (props: StatusListItemProps) => {
   }, [])
 
   // determine user ID of other user
-  useEffect(() => {
-    const getOtherUser = async () => {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      if (statusRoom.statusRoomUsers.items[0].user.id === userInfo.attributes.sub) {
-        setOtherUser(statusRoom.statusRoomUsers.items[1].user);
-      } else {
-        setOtherUser(statusRoom.statusRoomUsers.items[0].user);
-      }
+  const getOtherUser = async () => {
+    const userInfo = await Auth.currentAuthenticatedUser();
+    if (statusRoom.statusRoomUsers.items[0].user.id === userInfo.attributes.sub) {
+      setOtherUser(statusRoom.statusRoomUsers.items[1].user);
+    } else {
+      setOtherUser(statusRoom.statusRoomUsers.items[0].user);
     }
+  };
+
+  useEffect(() => {
     getOtherUser();
   }, [])
 

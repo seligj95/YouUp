@@ -1,4 +1,4 @@
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName, View, TouchableOpacity } from 'react-native';
@@ -11,6 +11,8 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import ContactsScreen from '../screens/ContactsScreen';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { deleteStatusRoomUser, deleteStatusRoom, deleteStatus, deleteTag } from '../graphql/mutations'
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -62,7 +64,7 @@ function RootNavigator() {
         options={({ route }) => ({ 
           title: route.params.name,
           headerRight: () => (
-            // make this a button that clears tags and resets status?
+            // button to delete status room, navigate back to status screen
             <TouchableOpacity>
               <View style={{marginRight: 20}}>
                 <AntDesign name="delete" size={30} color={Colors.light.background} />

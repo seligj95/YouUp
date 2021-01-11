@@ -105,6 +105,9 @@ export const createStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -139,6 +142,9 @@ export const updateStatusRoomUser = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -177,6 +183,9 @@ export const deleteStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -203,6 +212,17 @@ export const createStatusRoom = /* GraphQL */ `
         nextToken
       }
       statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
         items {
           id
           createdAt
@@ -246,6 +266,17 @@ export const updateStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -269,6 +300,17 @@ export const deleteStatusRoom = /* GraphQL */ `
         nextToken
       }
       statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
         items {
           id
           createdAt
@@ -314,6 +356,9 @@ export const createStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -351,6 +396,9 @@ export const updateStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -386,6 +434,129 @@ export const deleteStatus = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const createTag = /* GraphQL */ `
+  mutation CreateTag(
+    $input: CreateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    createTag(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const updateTag = /* GraphQL */ `
+  mutation UpdateTag(
+    $input: UpdateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    updateTag(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const deleteTag = /* GraphQL */ `
+  mutation DeleteTag(
+    $input: DeleteTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    deleteTag(input: $input, condition: $condition) {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt

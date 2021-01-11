@@ -37,7 +37,7 @@ const StatusInputBox = (props) => {
       console.log(e);
     }
     setStatus('');
-}
+  }
 
   const onPress = () => {
     if (!status) {

@@ -4,6 +4,7 @@ import StatusListItem from '../components/StatusListItem';
 import { getUser } from './queries';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import ContactsButton from '../components/ContactsButton';
+import { onCreateStatusRoom, onDeleteStatusRoom } from '../graphql/subscriptions';
 
 const renderSeparator = () => {
     return (
@@ -21,26 +22,47 @@ const renderSeparator = () => {
 export default function StatusesScreen() {
   const [statusRooms, setStatusRooms] = useState([]);
 
-  useEffect(() => {
-    // fetching status room data
-    const fetchStatusRooms = async () => {
-      try {
-        const userInfo = await Auth.currentAuthenticatedUser();
+  // fetching status room data
+  const fetchStatusRooms = async () => {
+    try {
+      const userInfo = await Auth.currentAuthenticatedUser();
 
-        const userData = await API.graphql(
-          graphqlOperation(
-            getUser, {
-              id: userInfo.attributes.sub,
-            }
-          )
+      const userData = await API.graphql(
+        graphqlOperation(
+          getUser, {
+            id: userInfo.attributes.sub,
+          }
         )
-        setStatusRooms(userData.data.getUser.statusRoomUser.items)
-      } catch (e) {
-        console.log(e);
-      }
-    };
+      )
+      setStatusRooms(userData.data.getUser.statusRoomUser.items)
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
     fetchStatusRooms();
   }, [])
+
+  // subscription for status room creation
+  // *** adding this caused crash when new status room created
+  // useEffect(() => {
+  //   const subsctiption = API.graphql(
+  //     graphqlOperation(onCreateStatusRoom)
+  //   ).subscribe({
+  //     next: (data) => {
+  //       const newStatusRoom = data.value.data.onCreateStatusRoom;
+  //       setStatusRooms([newStatusRoom, ...statusRooms]);
+  //       fetchStatusRooms();
+  //     }
+  //   });
+  //   return () => subsctiption.unsubscribe();
+  // }, [statusRooms])
+
+  // subscription for onDeleteStatusRoom
+
+
+  // subscription for status room updates? or should be on status list item?
   
   return (
     <View style={styles.container}>

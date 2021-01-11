@@ -93,6 +93,9 @@ export const onCreateStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -124,6 +127,9 @@ export const onUpdateStatusRoomUser = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -159,6 +165,9 @@ export const onDeleteStatusRoomUser = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -182,6 +191,17 @@ export const onCreateStatusRoom = /* GraphQL */ `
         nextToken
       }
       statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
         items {
           id
           createdAt
@@ -222,6 +242,17 @@ export const onUpdateStatusRoom = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -242,6 +273,17 @@ export const onDeleteStatusRoom = /* GraphQL */ `
         nextToken
       }
       statuses {
+        items {
+          id
+          createdAt
+          content
+          userID
+          statusRoomID
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
         items {
           id
           createdAt
@@ -284,6 +326,9 @@ export const onCreateStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -318,6 +363,9 @@ export const onUpdateStatus = /* GraphQL */ `
         statuses {
           nextToken
         }
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -350,6 +398,120 @@ export const onDeleteStatus = /* GraphQL */ `
           nextToken
         }
         statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
+      id
+      createdAt
+      content
+      userID
+      statusRoomID
+      user {
+        id
+        name
+        imageUri
+        shoutOut
+        statusRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      statusRoom {
+        id
+        statusRoomUsers {
+          nextToken
+        }
+        statuses {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
