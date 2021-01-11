@@ -19,10 +19,10 @@ const renderSeparator = () => {
   };
 
 export default function StatusesScreen() {
-
   const [statusRooms, setStatusRooms] = useState([]);
 
   useEffect(() => {
+    // fetching status room data
     const fetchStatusRooms = async () => {
       try {
         const userInfo = await Auth.currentAuthenticatedUser();
@@ -38,7 +38,7 @@ export default function StatusesScreen() {
       } catch (e) {
         console.log(e);
       }
-    }
+    };
     fetchStatusRooms();
   }, [])
   

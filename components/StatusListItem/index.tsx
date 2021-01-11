@@ -6,6 +6,7 @@ import style from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getStatusRoom } from '../../graphql/queries';
+import { onCreateStatus } from '../../graphql/subscriptions';
 
 export type StatusListItemProps = {
   statusRoom: StatusItem;
@@ -22,40 +23,41 @@ const StatusListItem = (props: StatusListItemProps) => {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const getLastStatuses = async () => {
-      // query to get authenicated user's id
-      const userInfo = await Auth.currentAuthenticatedUser();
-      const userId = userInfo.attributes.sub;
+  const getLastStatuses = async () => {
+    // query to get authenicated user's id
+    const userInfo = await Auth.currentAuthenticatedUser();
+    const userId = userInfo.attributes.sub;
 
-      // get statuses from status room
-      const statusRoomData = await API.graphql(
-        graphqlOperation(
-          getStatusRoom, {
-            id: statusRoom.id
-          }
-        )
+    // get statuses from status room
+    const statusRoomData = await API.graphql(
+      graphqlOperation(
+        getStatusRoom, {
+          id: statusRoom.id
+        }
       )
+    )
 
-      // create status arrarys for users
-      // sort array so that latest status is in index 0
-      const statusData = statusRoomData.data.getStatusRoom.statuses.items;
-      let userStatuses = statusData.filter(item => item.userID === userId);
-      let otherUserStatuses = statusData.filter(item => item.userID !== userId);
-      
-      function sortStatuses(t1, t2) {
-        var t1_date = new Date(t1.createdAt)
-        var t2_date = new Date(t2.createdAt)
-        return t2_date - t1_date;
-      }
+    // create status arrarys for users
+    // sort array so that latest status is in index 0
+    const statusData = statusRoomData.data.getStatusRoom.statuses.items;
+    let userStatuses = statusData.filter(item => item.userID === userId);
+    let otherUserStatuses = statusData.filter(item => item.userID !== userId);
+    
+    function sortStatuses(t1, t2) {
+      var t1_date = new Date(t1.createdAt)
+      var t2_date = new Date(t2.createdAt)
+      return t2_date - t1_date;
+    }
 
-      let userStatusesSorted = userStatuses.sort(sortStatuses);
-      let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
-      setUserLastStatus(userStatusesSorted[0].content);
-      setUserLastStatusTime(userStatusesSorted[0].createdAt);
-      setOtherUserLastStatus(otherUserStatusesSorted[0].content);
-      setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
-    };
+    let userStatusesSorted = userStatuses.sort(sortStatuses);
+    let otherUserStatusesSorted = otherUserStatuses.sort(sortStatuses);
+    setUserLastStatus(userStatusesSorted[0].content);
+    setUserLastStatusTime(userStatusesSorted[0].createdAt);
+    setOtherUserLastStatus(otherUserStatusesSorted[0].content);
+    setOtherUserLastStatusTime(otherUserStatusesSorted[0].createdAt);
+  };
+  
+  useEffect(() => {
     getLastStatuses();
   }, [])
 
