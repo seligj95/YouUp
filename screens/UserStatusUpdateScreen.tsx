@@ -6,7 +6,7 @@ import StatusInputBox from '../components/StatusInputBox';
 import TagInputBox from '../components/TagInputBox/input';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { onCreateStatus, onCreateTag, onDeleteTag } from '../graphql/subscriptions';
-import DeleteStatusRoomButton from '../components/DeleteStatusRoomButton';
+import ClearStatusButton from '../components/ClearStatusButton';
 import { getStatusRoom } from '../graphql/queries';
 
 const UserStatusUpdateScreen = () => {
@@ -142,7 +142,7 @@ const UserStatusUpdateScreen = () => {
         />
         <TagInputBox />
       </View>
-      <DeleteStatusRoomButton />
+      <ClearStatusButton />
     </React.Fragment>
   );
 }

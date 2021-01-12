@@ -6,7 +6,7 @@ import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { createTag } from '../../graphql/mutations';
 import { useRoute } from '@react-navigation/native';
 
-const TagInputBox = (props) => {
+const TagInputBox = () => {
   const route = useRoute();
 
   const [tag, setTag] = useState('');
@@ -28,7 +28,6 @@ const TagInputBox = (props) => {
           }
         )
       )
-      console.log('created tag: ', newTag)
     } catch (e) {
       console.log(e);
     }
